@@ -5,7 +5,7 @@ class libaryCard{
   private String lastName;
   private String address;
   private int phoneNumber;
-  private boolean isChild;
+  private final boolean isChild;
   private double fine;
   private int cardNumber;
 
@@ -15,10 +15,7 @@ class libaryCard{
       this.lastName = lastName;
       this.address = address;
       this.phoneNumber = phoneNumber;
-      if(age <= 12)
-          isChild = true;
-      else
-          isChild = false;
+      isChild = age <= 12;
   }
 
   public String getName(){
