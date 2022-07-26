@@ -7,7 +7,7 @@ class checkoutTracker extends librarySystem{
         //TODO Auto-generated constructor stub
     }
 
-    HashMap<Integer, String> checkoutLog = new HashMap<Integer, String>();
+    HashMap<Integer, String> checkoutLog = new HashMap<>();
 
     public void checkOutItem(int itemID, int userID){
 
