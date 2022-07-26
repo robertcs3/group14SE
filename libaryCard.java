@@ -9,6 +9,17 @@ class libaryCard{
   private double fine;
   private int cardNumber;
 
+  public libaryCard(String firstName, String lastName, String address, int phoneNumber, int age)
+  {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.address = address;
+      this.phoneNumber = phoneNumber;
+      if(age <= 12)
+          isChild = true;
+      else
+          isChild = false;
+  }
 
   public String getName(){
       return firstName;
