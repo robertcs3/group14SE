@@ -1,4 +1,4 @@
-class libaryCard{
+class libraryCard{
 
 
     private String firstName;
@@ -9,7 +9,7 @@ class libaryCard{
     private double fine;
     private int cardNumber;
   
-    public libaryCard(String firstName, String lastName, String address, int phoneNumber, int age)
+    public libraryCard(String firstName, String lastName, String address, int phoneNumber, int age)
     {
         this.firstName = firstName;
         this.lastName = lastName;
