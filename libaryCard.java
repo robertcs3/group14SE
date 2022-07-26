@@ -12,10 +12,10 @@ class libaryCard
 
   public String toString()
   {
-      System.out.println(firstName);
-      System.out.println(lastName);
-      System.out.println(address);
-      System.out.println(idNumber);
-      return "";
+      String output = "First Name: " + firstName;
+      output += "\nLast Name: " + lastName;
+      output += "\nAddress: " + address;
+      output += "\nID Number: " +idNumber;
+      return output;
   }
 }
