@@ -23,14 +23,14 @@ class libaryCard{
     }
 
   public int  getID(){
-      return carNumber;
+      return cardNumber;
     }
 
   public int  getPhoneNumber(){
       return phoneNumber;
     }
 
-  public int  getFine(){
+  public double getFine(){
       return fine;
     }
 
