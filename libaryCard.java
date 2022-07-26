@@ -1,8 +1,6 @@
 class libaryCard{
-<<<<<<< HEAD
-  
-=======
 
+  
 
   private String firstName;
   private String lastName;
@@ -32,7 +30,7 @@ class libaryCard{
   public int  getPhoneNumber(){
       return phoneNumber;
     }
-
+  
   public int  getFine(){
       return fine;
     }
@@ -65,5 +63,5 @@ class libaryCard{
   }
 
 
->>>>>>> task1
+
 }
