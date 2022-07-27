@@ -10,6 +10,8 @@ class librarySystem extends libraryCard {
 
     ArrayList<libraryCard> memberList = new ArrayList<>();
 
+    Librarycard currentUser = new Librarycard();
+
 
 
     public void signUp(String firstName, String lastName, String address, int phoneNumber){
