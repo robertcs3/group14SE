@@ -1,12 +1,8 @@
 import java.util.ArrayList;
 
-class librarySystem extends libraryCard {
+class librarySystem  {
 
-    public librarySystem(String firstName, String lastName, String address, int phoneNumber, int age) {
-        super(firstName, lastName, address, phoneNumber, age);
-        //TODO Auto-generated constructor stub
-        
-    }
+   
 
     ArrayList<libraryCard> memberList = new ArrayList<>();
 

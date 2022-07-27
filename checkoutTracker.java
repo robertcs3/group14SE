@@ -1,11 +1,8 @@
 import java.util.HashMap;
 
-class checkoutTracker extends librarySystem{
+class checkoutTracker {
 
-    public checkoutTracker(String firstName, String lastName, String address, int phoneNumber, int age) {
-        super(firstName, lastName, address, phoneNumber, age);
-        //TODO Auto-generated constructor stub
-    }
+    
 
     HashMap<Integer, String> checkoutLog = new HashMap<>();
 
