@@ -4,7 +4,7 @@ class checkoutTracker {
 
     
 
-    HashMap<Integer, String> checkoutLog = new HashMap<>();
+    HashMap<Integer, Integer> checkoutLog = new HashMap<>();
 
     public void checkOutItem(int itemID, int userID){
 
