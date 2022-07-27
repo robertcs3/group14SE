@@ -1,10 +1,12 @@
+import java.util.Date;
+
 public interface CheckOutAble
 {
 
     public void setRenewStatus(boolean status);
     public String getName();
     public void setName(String name);
-    public int getDateCheckout();
+    public Date getDateCheckout();
     public int getDurationLimit();
     public int getID();
     public void setID(int itemID);

@@ -17,6 +17,7 @@ class libaryCard{
       this.address = address;
       this.phoneNumber = phoneNumber;
       this.isChild = isChild;
+
   }
   public String getName(){
       return firstName;

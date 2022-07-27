@@ -1,9 +1,11 @@
+import java.util.Date;
+
 public class video implements  CheckOutAble{
     String name;
     double itemValue = 0;
     int durationLimit = 14;//days
     int itemID = 0;
-    int dateCheckout = 0;
+    Date dateCheckout;
     int copies = 1;
     boolean isRenew = false;
 
@@ -32,7 +34,7 @@ public class video implements  CheckOutAble{
     }
 
     @Override
-    public int getDateCheckout() {
+    public Date getDateCheckout() {
         return dateCheckout;
     }
 
