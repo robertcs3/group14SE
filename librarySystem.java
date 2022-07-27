@@ -4,6 +4,7 @@ class librarySystem extends libraryCard {
 
     public librarySystem(String firstName, String lastName, String address, int phoneNumber, int age) {
         super(firstName, lastName, address, phoneNumber, age);
+        //TODO Auto-generated constructor stub
         
     }
 
@@ -32,7 +33,8 @@ class librarySystem extends libraryCard {
     }
 
     public boolean renewItem(int itemID, int userID){
-        return false;
+        //placeholder
+        return true;
 
     }
 
@@ -41,6 +43,7 @@ class librarySystem extends libraryCard {
     }
 
     public double outStandingFine(int userID){
+        //placeholder
         return userID;
 
 
