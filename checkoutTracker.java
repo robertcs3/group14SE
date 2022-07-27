@@ -2,7 +2,10 @@ import java.util.HashMap;
 
 class checkoutTracker {
 
-    
+    //Constructor
+    public checkoutTracker(){
+
+    }
 
     HashMap<Integer, CheckOutAble> checkoutLog = new HashMap<>();
 
