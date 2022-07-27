@@ -45,8 +45,6 @@ class libaryCard{
   public boolean isChild(){
       return isChild;
     }
-
-
   public void setName(String newName){
       this.firstName = newName;
   }
