@@ -1,7 +1,4 @@
 class libaryCard{
-<<<<<<<<< Temporary merge branch 1
-  
-=========
 
 
   private String firstName;
@@ -12,7 +9,15 @@ class libaryCard{
   private double fine;
   private int cardNumber;
 
-
+  public libaryCard(int id, String firstName, String lastName, String address, int phoneNumber, boolean isChild)
+  {
+      cardNumber = id;
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.address = address;
+      this.phoneNumber = phoneNumber;
+      this.isChild = isChild;
+  }
   public String getName(){
       return firstName;
     }
@@ -26,19 +31,19 @@ class libaryCard{
     }
 
   public int  getID(){
-      return carNumber;
+      return cardNumber;
     }
 
   public int  getPhoneNumber(){
       return phoneNumber;
     }
 
-  public int  getFine(){
+  public double getFine(){
       return fine;
     }
 
   public boolean isChild(){
-      this.isChild = false;
+      return isChild;
     }
 
 
@@ -63,7 +68,4 @@ class libaryCard{
   public void addFine(int updateFine){
       this.fine += updateFine;
   }
-
-
->>>>>>>>> Temporary merge branch 2
 }
