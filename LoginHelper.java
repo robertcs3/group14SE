@@ -11,7 +11,7 @@ public class LoginHelper implements ActionListener
     JFrame mainFrame;
     JPanel mainPanel;
     private JLabel userIDLabel, passwordLabel;
-    private JButton login;
+    private JButton login, backToMain;
     private JTextField userID, password;
     private ArrayList<Integer> userIDList = new ArrayList<Integer>();
     private ArrayList<String> passwordList = new ArrayList<String>();
@@ -49,6 +49,7 @@ public class LoginHelper implements ActionListener
         passwordLabel = new JLabel("password");
         password = new JTextField("");
         login = new JButton("Log in");
+        backToMain = new JButton("Back to Main Menu");
 
 
         mainPanel.add(userIDLabel);
@@ -79,16 +80,16 @@ public class LoginHelper implements ActionListener
                 {
                     //validate password
                     String pass = password.getText();
-                    if(checkPassword(pass))
+                    if(checkPassword(pass))//Everything pass validation
                     {
                         UserMenu user = new UserMenu(mainFrame, mainPanel);//Replace menu with user menu
                     }
-                    else
+                    else//wrong password
                     {
                         JOptionPane.showMessageDialog(mainFrame, "Invalid Password\nPlease try again");
                     }
                 }
-                else
+                else//ID does not exist
                 {
                     JOptionPane.showMessageDialog(mainFrame, "ID does not exist\nPlease try again");
                 }
