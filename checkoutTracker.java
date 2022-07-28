@@ -1,5 +1,6 @@
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -12,9 +13,7 @@ public class checkoutTracker {
    CheckOutAble[] colVal = null;
    
     int count = 0;
-    HashMap<Integer, CheckOutAble> checkoutLog = new HashMap<Integer, CheckOutAble>();
-   
-    
+    HashMap<Integer, ArrayList<CheckOutAble>> checkoutLog = new HashMap<Integer, ArrayList<CheckOutAble>>();
 
     //Constructor
     public checkoutTracker() {
@@ -29,25 +28,36 @@ public class checkoutTracker {
                 //Date will always be even index number
                 //Item ID will always be odd index number
                 int id = Integer.parseInt(logLine[0]);
+                ArrayList<CheckOutAble> items = new ArrayList<CheckOutAble>();
                 for(int i = 1; i < logLine.length; i++ )
                 {
                     Date checkoutDate = new SimpleDateFormat("mm/dd/yyyy").parse(logLine[i]);
                     i += 1;
-                    CheckOutAble item = this.item(Integer.parseInt(logLine[i]));
-                    item.setDateCheckout(checkoutDate);
-                    checkoutLog.put(id,item);
+                    CheckOutAble itemToAdd = this.item(Integer.parseInt(logLine[i]));
+                    itemToAdd.setDateCheckout(checkoutDate);
+                    items.add(itemToAdd);
                 }
+                checkoutLog.put(id,items);
             }
 
         } catch (Exception e){
     
             e.printStackTrace();
         }
-        
 
         
     }
 
+    public void testTest()
+    {
+        for(int id: checkoutLog.keySet())
+        {
+            for(CheckOutAble item: checkoutLog.get(id))
+            {
+                System.out.println(item.getName());
+            }
+        }
+    }
     public void checkOutItem(int itemID, int userID){
 
     }
@@ -125,6 +135,7 @@ public class checkoutTracker {
     public static void main(String[] args)//Temporary for testing
     {
         checkoutTracker ch = new checkoutTracker();
+        ch.testTest();
     }
 
     
