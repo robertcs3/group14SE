@@ -10,12 +10,13 @@ public class video implements  CheckOutAble{
     boolean isRenew = false;
 
     //Default constructor
-    public video(int itemID, int value, String name)
+    public video(int itemID, int value, int copies, String name)
     {
         //Set video's values
         this.itemID = itemID;
         itemValue = value;
         this.name = name;
+        this.copies = copies;
     }
 
     @Override
@@ -78,5 +79,10 @@ public class video implements  CheckOutAble{
     @Override
     public double getValue() {
         return itemValue;
+    }
+
+    public void setDateCheckout(Date checkoutDate)
+    {
+        dateCheckout = checkoutDate;
     }
 }

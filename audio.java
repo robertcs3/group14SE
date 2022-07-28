@@ -11,12 +11,13 @@ public class audio implements CheckOutAble{
 
 
     //Default constructor
-    public audio(int itemID, int value, String name)
+    public audio(int itemID, int value, int copies, String name)
     {
         //Set audio's values
         this.itemID = itemID;
         itemValue = value;
         this.name = name;
+        this.copies = copies;
     }
 
     @Override
@@ -79,5 +80,9 @@ public class audio implements CheckOutAble{
     @Override
     public double getValue() {
         return itemValue;
+    }
+    public void setDateCheckout(Date checkoutDate)
+    {
+        dateCheckout = checkoutDate;
     }
 }

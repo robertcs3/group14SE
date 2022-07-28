@@ -11,25 +11,15 @@ public class book implements  CheckOutAble
     boolean isRenew = false;
     private boolean isBestSeller;
 
-    //Default constructor
-    public book(int itemID, int value, String name)
-    {
-        //Set book's values
-        this.itemID = itemID;
-        itemValue = value;
-        this.name = name;
-
-        //Set book borrow duration
-        durationLimit = 21;//days
-    }
 
     //Constructor for bestseller book
-    public book(int itemID, int value, String name, boolean isBestSeller)
+    public book(int itemID, String name, int value, int copies, boolean isBestSeller)
     {
         this.itemID = itemID;
         itemValue = value;
         this.name = name;
         this.isBestSeller = isBestSeller;
+        this.copies = copies;
 
         //Check if bestseller == true
         if(this.isBestSeller)
@@ -109,5 +99,9 @@ public class book implements  CheckOutAble
     @Override
     public double getValue() {
         return itemValue;
+    }
+    public void setDateCheckout(Date checkoutDate)
+    {
+        dateCheckout = checkoutDate;
     }
 }
