@@ -72,7 +72,6 @@ public class LoginHelper implements ActionListener
     {
         try
         {
-            String errorString = "";
             if(isNumber(userID.getText())) {
                 int id = Integer.parseInt(userID.getText());
                 //validate id
@@ -83,6 +82,7 @@ public class LoginHelper implements ActionListener
                     if(checkPassword(pass))//Everything pass validation
                     {
                         UserMenu user = new UserMenu(mainFrame, mainPanel);//Replace menu with user menu
+
                     }
                     else//wrong password
                     {

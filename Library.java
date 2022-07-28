@@ -7,6 +7,7 @@ public class Library
 {
     public Library()
     {
+        boolean logInCheck = false;
         //Initialize Library System
         librarySystem system = new librarySystem();
         //GUI
