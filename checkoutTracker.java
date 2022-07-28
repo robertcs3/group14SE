@@ -74,9 +74,9 @@ public class checkoutTracker {
 
     //Return an item
     public void returnItem(int itemID, int userID){
-        if (checkoutLog.containsKey(userID) && checkoutLog.containsValue(itemID)){
+        if (checkoutLog.get(userID).contains(item(itemID))){
             System.out.println("Item ID Returned");
-            checkoutLog.get(userID).remove(itemID);
+            checkoutLog.get(userID).remove(item(itemID));
         } else{
             System.out.println("item ID cannot be returned since it was not checked out");
         }
