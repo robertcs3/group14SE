@@ -1,37 +1,77 @@
+import java.io.*;
 import java.util.HashMap;
 
-class checkoutTracker {
+public class checkoutTracker {
+
+
+
+    BufferedReader br = null;
+   Integer[] header = null;
+   CheckOutAble[] colVal = null;
+   
+    int count = 0;
+    HashMap<Integer, CheckOutAble> checkoutLog = new HashMap<Integer, CheckOutAble>();
+   
+    
 
     //Constructor
-    public checkoutTracker(){
+    public checkoutTracker(HashMap<Integer, CheckOutAble> checkoutLog) {
+        this.checkoutLog = checkoutLog;
 
+        try {
+            //read checkoutLog.csv
+            br = new BufferedReader(new FileReader("checkoutLog.csv"));
+            
+            
+            //Add to hashmap
+            while (count < header.length){
+                checkoutLog.put(header[count], colVal[count]);
+        
+                count++;
+            }
+
+        } catch (Exception e){
+    
+            e.printStackTrace();
+        }
+        
+
+        
     }
 
-    HashMap<Integer, CheckOutAble> checkoutLog = new HashMap<>();
+    public void checkOutItem(int itemID, int userID){
 
-    public void checkOutItem(CheckOutAble itemID, int userID){
-        //Add userID with corresponding itemID
-        checkoutLog.put(userID, itemID);
     }
 
     public boolean renewItem(int itemID, int userID){
         //placeholder
         return true;
+
     }
 
-    public boolean checkOutstandingRequest(int itemID, int userID){
+    public boolean checkOutStandingRequest(int itemID, int userID){
         //placeholder
         return true;
+
     }
 
     public void returnItem(int itemID, int userID){
 
     }
 
-    public double outstandingFine(int userID){
+    public double outStandingFine (int userID){
         //placeholder
         return userID;
 
     }
+
+
+
+    
+
+    
+    
+   
+
   
 }
