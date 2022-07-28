@@ -35,6 +35,7 @@ public class LoginHelper implements ActionListener
                 userIDList.add(Integer.parseInt(user[0]));
                 passwordList.add(user[1]);
             }
+            fileReader.close();
         }
         catch(Exception e)
         {

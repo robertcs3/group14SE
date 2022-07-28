@@ -1,4 +1,6 @@
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 public class checkoutTracker {
@@ -15,19 +17,26 @@ public class checkoutTracker {
     
 
     //Constructor
-    public checkoutTracker(HashMap<Integer, CheckOutAble> checkoutLog) {
-        this.checkoutLog = checkoutLog;
-
+    public checkoutTracker() {
         try {
             //read checkoutLog.csv
             br = new BufferedReader(new FileReader("checkoutLog.csv"));
-            
-            
-            //Add to hashmap
-            while (count < header.length){
-                checkoutLog.put(header[count], colVal[count]);
-        
-                count++;
+            String line = "";
+            int counter = 0;
+            while((line = br.readLine()) != null)
+            {
+                String[] logLine = line.split(",");
+                //Date will always be even index number
+                //Item ID will always be odd index number
+                int id = Integer.parseInt(logLine[0]);
+                for(int i = 1; i < logLine.length; i++ )
+                {
+                    Date checkoutDate = new SimpleDateFormat("mm/dd/yyyy").parse(logLine[i]);
+                    i += 1;
+                    CheckOutAble item = this.item(Integer.parseInt(logLine[i]));
+                    item.setDateCheckout(checkoutDate);
+                    checkoutLog.put(id,item);
+                }
             }
 
         } catch (Exception e){
@@ -66,8 +75,57 @@ public class checkoutTracker {
     }
 
 
+    private CheckOutAble item(int itemID)
+    {
+        //Store in 2 arraylist: userIDList and passwordList
+        try
+        {
 
-    
+            String line = "";
+            //Check item is in book
+            BufferedReader fileReader = new BufferedReader(new FileReader("book.csv"));
+            while((line = fileReader.readLine()) != null)
+            {
+                String[] itemLine = line.split(",");
+                int id = Integer.parseInt(itemLine[0]);
+                if(id == itemID)
+                    return new book(id, itemLine[1], Integer.parseInt(itemLine[2]), Integer.parseInt(itemLine[3]),Boolean.parseBoolean(itemLine[4]));
+            }
+            fileReader.close();
+
+            //Check item is in video
+            fileReader = new BufferedReader(new FileReader("video.csv"));
+            while((line = fileReader.readLine()) != null)
+            {
+                String[] itemLine = line.split(",");
+                int id = Integer.parseInt(itemLine[0]);
+                if(id == itemID)
+                    return new video(id,  Integer.parseInt(itemLine[2]), Integer.parseInt(itemLine[3]),  itemLine[1]);
+            }
+            fileReader.close();
+
+            //Check item is in audio
+            fileReader = new BufferedReader(new FileReader("audio.csv"));
+            while((line = fileReader.readLine()) != null)
+            {
+                String[] itemLine = line.split(",");
+                int id = Integer.parseInt(itemLine[0]);
+                if(id == itemID)
+                    return new audio(id,  Integer.parseInt(itemLine[2]), Integer.parseInt(itemLine[3]),  itemLine[1]);
+            }
+            fileReader.close();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public static void main(String[] args)//Temporary for testing
+    {
+        checkoutTracker ch = new checkoutTracker();
+    }
 
     
     
