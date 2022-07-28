@@ -56,13 +56,13 @@ public class checkoutTracker {
             }
         }
     }
-    public void checkOutItem(int itemID, int userID){
-
+    public void checkOutItem(ArrayList<CheckOutAble> itemID, int userID){
+        checkoutLog.put(userID, itemID);
     }
 
     public boolean renewItem(int itemID, int userID){
-        //placeholder
-        return true;
+        boolean isRenew = true;
+        return isRenew;
 
     }
 
@@ -72,12 +72,22 @@ public class checkoutTracker {
 
     }
 
+    //Return an item
     public void returnItem(int itemID, int userID){
+        if (checkoutLog.containsKey(userID) && checkoutLog.containsValue(itemID)){
+            System.out.println("Item ID Returned");
+            checkoutLog.get(userID).remove(itemID);
+        } else{
+            System.out.println("item ID cannot be returned since it was not checked out");
+        }
+    
 
     }
 
     public double outStandingFine (int userID){
         //placeholder
+
+
         return userID;
 
     }
