@@ -9,8 +9,6 @@ public class checkoutTracker {
 
 
     BufferedReader br = null;
-   Integer[] header = null;
-   CheckOutAble[] colVal = null;
    
     int count = 0;
     HashMap<Integer, ArrayList<CheckOutAble>> checkoutLog = new HashMap<Integer, ArrayList<CheckOutAble>>();
