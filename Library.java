@@ -9,10 +9,10 @@ public class Library
 {
     private ArrayList<Integer> userIDList = new ArrayList<Integer>();
     private ArrayList<String> passwordList = new ArrayList<String>();
+    //Initialize Library System
+    librarySystem system = new librarySystem();
     public Library()
     {
-        //Initialize Library System
-        librarySystem system = new librarySystem();
         //Parse data for log in and sign up
         inforParse();
 
@@ -245,27 +245,22 @@ public class Library
                 {
                     try
                     {
-                        //Check if user is a child
-                        boolean isChild = false;
-                        if(Integer.parseInt(age.getText()) <= 12)
-                            isChild = true;
+                        //Get values to save
+                        String firstName = fName.getText();
+                        String lastName = lName.getText();
+                        String passWd = password.getText();
+                        String phoneNumber = phoneNum.getText();
+                        String addressString = address.getText();
+                        int userAge = Integer.parseInt(age.getText());
 
                         //Write to login.csv
                         BufferedWriter fileToWrite = new BufferedWriter(new FileWriter("login.csv", true));
                         fileToWrite.write("\n"+id +", "+password.getText());
                         fileToWrite.close();
 
-                        //Write to user.csv
-                        fileToWrite = new BufferedWriter(new FileWriter("user.csv", true));
-                        fileToWrite.write("\n" +id
-                                + "," + fName.getText()
-                                + "," + lName.getText()
-                                + "," + password.getText()
-                                + "," + phoneNum.getText()
-                                + ", \"" + address.getText()+"\""
-                                + "," + isChild
-                        );
-                        fileToWrite.close();
+                        //Write to login.csv
+                        system.signUp(id, firstName, lastName, passWd, addressString, phoneNumber, userAge);
+
 
                         //LOG IN SUCCESSFUL++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
