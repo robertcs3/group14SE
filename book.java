@@ -95,7 +95,6 @@ public class book implements  CheckOutAble
             copies-=amount;
         }
     }
-
     @Override
     public int getValue() {
         return itemValue;

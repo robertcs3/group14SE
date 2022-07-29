@@ -9,6 +9,7 @@ public class Library
 {
     private ArrayList<Integer> userIDList = new ArrayList<Integer>();
     private ArrayList<String> passwordList = new ArrayList<String>();
+    String fines = "";
     //currentUser
     int currentUserID = 0;
     //Initialize Library System
@@ -132,6 +133,7 @@ public class Library
 
                                 //Set current user
                                 currentUserID = Integer.parseInt(userID.getText());
+                                fines = ""+system.outStandingFine(currentUserID);
 
                                 //Clear text fields
                                 userID.setText("");
@@ -340,9 +342,6 @@ public class Library
         userPanel.add(finesOwn);
 
         //GUI END--------------------------------------------------------------------------------------
-
-        //Get user's fine if exist
-        finesOwn.setText(""+system.outStandingFine(currentUserID));
 
         //Set function for buttons
         returnItem.addActionListener(new ActionListener() {
