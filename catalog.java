@@ -1,4 +1,3 @@
-import java.awt.print.Book;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -14,8 +13,9 @@ public class catalog {
 
 
     public catalog(){
+
+        // reading in data from book.csv
         try{
-            // reading in data from book.csv
             br = new BufferedReader(new FileReader("book.csv"));
             String line = "";
 
@@ -41,8 +41,8 @@ public class catalog {
             e.printStackTrace();
         }
 
+        // reading in data from audio.csv
         try{
-            // reading in data from audio.csv
             br = new BufferedReader(new FileReader("audio.csv"));
             String line = "";
 
@@ -50,7 +50,92 @@ public class catalog {
                 String[] logLine = line.split(",");
 
                 // Reading in values to for item objects (audio)
+                int id = Integer.parseInt(logLine[0]);
+                String name = logLine[1];
+                int value = Integer.parseInt(logLine[2]);
+                int copies = Integer.parseInt(logLine[3]);
 
+                // now create a new audio item and add it
+                audio newAudio = new audio(id, name, value, copies);
+                checkOutAbleList.add(newAudio);
+
+                // new line should kick off next audio entry until EOF
+            }
+            br.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        // reading in data from video.csv
+        try{
+            br = new BufferedReader(new FileReader("video.csv"));
+            String line = "";
+
+            while((line = br.readLine()) != null){
+                String[] logLine = line.split(",");
+
+                // Reading in values to for item objects (video)
+                int id = Integer.parseInt(logLine[0]);
+                String name = logLine[1];
+                int value = Integer.parseInt(logLine[2]);
+                int copies = Integer.parseInt(logLine[3]);
+
+                // now create a new video item and add it
+                video newVideo = new video(id, name, value, copies);
+                checkOutAbleList.add(newVideo);
+
+                // new line should kick off next video entry until EOF
+            }
+            br.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        // reading in data from magazine.csv
+        try{
+            br = new BufferedReader(new FileReader("magazine.csv"));
+            String line = "";
+
+            while((line = br.readLine()) != null){
+                String[] logLine = line.split(",");
+
+                // Reading in values to for item objects (magazine)
+                int id = Integer.parseInt(logLine[0]);
+                String name = logLine[1];
+                int value = Integer.parseInt(logLine[2]);
+
+                // now create a new magazine item and add it (can not be checked out)
+                magazine newMagazine = new magazine(id,name,value);
+                unCheckoutAbleList.add(newMagazine);
+
+                // new line should kick off next magazine entry until EOF
+            }
+            br.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        // reading in data from reference.csv
+        try{
+            br = new BufferedReader(new FileReader("reference.csv"));
+            String line = "";
+
+            while((line = br.readLine()) != null){
+                String[] logLine = line.split(",");
+
+                // Reading in values to for item objects (reference)
+                int id = Integer.parseInt(logLine[0]);
+                String name = logLine[1];
+                int value = Integer.parseInt(logLine[2]);
+
+                // now create a new reference item and add it (can not be checked out)
+                referenceBook newReference = new referenceBook(id, name, value);
+                unCheckoutAbleList.add(newReference);
+
+                // new line should kick off next reference entry until EOF
             }
             br.close();
         }
@@ -60,18 +145,40 @@ public class catalog {
     }
 
     // checking that an item with specific item ID exists in the catalog
-    public boolean itemChecker(int itemID){
-        boolean exists = true;
-        return exists;
+    public boolean itemChecker(int itemID) {
+        // checking list of check-out-able items first (lists may not be same size)
+
+        for (int index = 0; index < checkOutAbleList.size(); ++index) {
+            if (checkOutAbleList.get(index).getID() == itemID) {
+                return true;
+            }
+        }
+
+        //checking list of un-check-out-able items second (lists may not be same size)
+        for (int index = 0; index < unCheckoutAbleList.size(); ++index){
+            if (unCheckoutAbleList.get(index).getId() == itemID){
+                return true;
+            }
+        }
+
+        // base case id was not found in catalog across both lists
+        return false;
     }
 
+
     // Displays catalog helper function
-    public void showCatalog(){
+    public ArrayList<CheckOutAble> showCatalog(){
         // placeholder (implementation needed)
+        return checkOutAbleList;
     }
 
     public boolean requestItem(int itemID){
-        boolean x = true;
-        return x;
+        // if the item exists in the catalog the item can not be added via a request
+
+        if(itemChecker(itemID)){
+            return false;
+        }
+        else
+            return true;
     }
 }
