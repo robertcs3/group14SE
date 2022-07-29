@@ -11,7 +11,7 @@ public class audio implements CheckOutAble{
 
 
     //Default constructor
-    public audio(int itemID, int value, int copies, String name)
+    public audio(int itemID, String name, int value, int copies)
     {
         //Set audio's values
         this.itemID = itemID;

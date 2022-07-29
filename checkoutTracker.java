@@ -110,7 +110,7 @@ public class checkoutTracker {
                 String[] itemLine = line.split(",");
                 int id = Integer.parseInt(itemLine[0]);
                 if(id == itemID)
-                    return new video(id,  Integer.parseInt(itemLine[2]), Integer.parseInt(itemLine[3]),  itemLine[1]);
+                    return new video(id, itemLine[1], Integer.parseInt(itemLine[2]), Integer.parseInt(itemLine[3]) );
             }
             fileReader.close();
 
@@ -121,7 +121,7 @@ public class checkoutTracker {
                 String[] itemLine = line.split(",");
                 int id = Integer.parseInt(itemLine[0]);
                 if(id == itemID)
-                    return new audio(id,  Integer.parseInt(itemLine[2]), Integer.parseInt(itemLine[3]),  itemLine[1]);
+                    return new audio(id, itemLine[1], Integer.parseInt(itemLine[2]),Integer.parseInt(itemLine[3]) );
             }
             fileReader.close();
         }
