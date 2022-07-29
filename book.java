@@ -3,7 +3,7 @@ import java.util.Date;
 public class book implements  CheckOutAble
 {
     String name;
-    double itemValue = 0;
+    int itemValue = 0;
     int durationLimit = 0;
     int itemID = 0;
     Date dateCheckout;
@@ -97,7 +97,7 @@ public class book implements  CheckOutAble
     }
 
     @Override
-    public double getValue() {
+    public int getValue() {
         return itemValue;
     }
     public void setDateCheckout(Date checkoutDate)

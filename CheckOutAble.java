@@ -13,7 +13,7 @@ public interface CheckOutAble
     public int getCopies();
     public void addCopies(int amount);
     public void decreaseCopy(int amount);
-    public double getValue();
+    public int getValue();
     public void setDateCheckout(Date checkoutDate);
     public void setValue(int value);
 }
