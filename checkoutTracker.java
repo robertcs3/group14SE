@@ -90,7 +90,6 @@ public class checkoutTracker {
         //Store in 2 arraylist: userIDList and passwordList
         try
         {
-
             String line = "";
             //Check item is in book
             BufferedReader fileReader = new BufferedReader(new FileReader("book.csv"));
