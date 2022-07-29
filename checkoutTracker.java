@@ -74,24 +74,21 @@ public class checkoutTracker {
     public void returnItem(int itemID, int userID){
         for (Map.Entry<Integer,ArrayList<CheckOutAble>> entry : checkoutLog.entrySet()){
 
-            System.out.println("Current key: + " + entry.getKey());
+           
             for (CheckOutAble iD : entry.getValue()){
 
-                System.out.println(iD);
+                
 
                 if (entry.getKey().equals(userID) && iD.equals(itemID) ){
                     System.out.println("Item ID Returned");
                     checkoutLog.get(userID).remove(itemID);
                     break;
-                } 
-                
-
-
-
+                }  
+                    
                 }
 
             }
-            System.out.println("Item ID cannot be returned as it was not checked out");
+           
         }
 
     
