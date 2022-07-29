@@ -74,12 +74,12 @@ public class checkoutTracker {
     public void returnItem(int itemID, int userID){
         for (Map.Entry<Integer,ArrayList<CheckOutAble>> entry : checkoutLog.entrySet()){
 
-           
+            System.out.println("key + " + entry.getKey());
             for (CheckOutAble iD : entry.getValue()){
 
                 
 
-                if (entry.getKey().equals(userID) && iD.equals(itemID) ){
+                if (entry.getKey() == userID && iD.getID() == itemID ){
                     System.out.println("Item ID Returned");
                     checkoutLog.get(userID).remove(itemID);
                     break;
@@ -155,7 +155,7 @@ public class checkoutTracker {
     
         
         checkoutTracker ret = new checkoutTracker();
-        ret.returnItem(40791, 6730387);
+        ret.returnItem(40791, 1081117);
     }
 
     
