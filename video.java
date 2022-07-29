@@ -2,7 +2,7 @@ import java.util.Date;
 
 public class video implements  CheckOutAble{
     String name;
-    double itemValue = 0;
+    int itemValue = 0;
     int durationLimit = 14;//days
     int itemID = 0;
     Date dateCheckout;
@@ -77,9 +77,11 @@ public class video implements  CheckOutAble{
     }
 
     @Override
-    public double getValue() {
+    public int getValue() {
         return itemValue;
     }
+
+    public void setValue(int value){itemValue = value;}
 
     public void setDateCheckout(Date checkoutDate)
     {

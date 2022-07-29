@@ -172,13 +172,27 @@ public class catalog {
         return checkOutAbleList;
     }
 
-    public boolean requestItem(int itemID){
-        // if the item exists in the catalog the item can not be added via a request
-
-        if(itemChecker(itemID)){
-            return false;
+    public CheckOutAble getItem(int itemID)
+    {
+        if(itemChecker(itemID))
+        {
+            return checkOutAbleList.get(checkOutAbleList.indexOf(itemID));
         }
-        else
-            return true;
+        return null;
+    }
+
+    public boolean copiesDecrement(int itemID){
+        for(int index = 0; index < checkOutAbleList.size(); ++index){
+            if(checkOutAbleList.get(index).getID() == itemID){
+                if(checkOutAbleList.get(index).getCopies() >= 1){
+                    checkOutAbleList.get(index).decreaseCopy(1);
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 }

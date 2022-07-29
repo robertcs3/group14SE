@@ -2,7 +2,7 @@ import java.util.Date;
 
 public class audio implements CheckOutAble{
     String name;
-    double itemValue = 0;
+    int itemValue = 0;
     int durationLimit = 14;
     int itemID = 0;
     Date dateCheckout;
@@ -19,6 +19,7 @@ public class audio implements CheckOutAble{
         this.name = name;
         this.copies = copies;
     }
+    public void setValue(int value){itemValue = value;}
 
     @Override
     public void setRenewStatus(boolean status) {
@@ -78,7 +79,7 @@ public class audio implements CheckOutAble{
     }
 
     @Override
-    public double getValue() {
+    public int getValue() {
         return itemValue;
     }
     public void setDateCheckout(Date checkoutDate)
