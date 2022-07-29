@@ -174,7 +174,6 @@ public class catalog {
 
     public boolean requestItem(int itemID){
         // if the item exists in the catalog the item can not be added via a request
-
         if(itemChecker(itemID)){
             return false;
         }
@@ -182,5 +181,12 @@ public class catalog {
             return true;
     }
 
+    public CheckOutAble getItem(int itemID)
+    {
+        if(itemChecker(itemID))
+        {
+            return checkOutAbleList.get(checkOutAbleList.indexOf(itemID));
+        }
+        return null;
+    }
 }
-
