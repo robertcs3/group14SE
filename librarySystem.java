@@ -4,7 +4,12 @@ import java.util.ArrayList;
 class librarySystem  {
 
     ArrayList<libraryCard> memberList = new ArrayList<>();
-    int currentUser = 0;
+
+    //Initialize sub systems
+    catalog libraryCatalog = new catalog();
+    paymentTracker paymentSystem = new paymentTracker();
+    checkoutTracker checkoutTracker = new checkoutTracker();
+
     public librarySystem()
     {
         //Read existing users into ArrayList memberList
@@ -64,8 +69,9 @@ class librarySystem  {
         memberList.add(newUser);
     }
 
-    public void checkOutItem(int itemID, int userID){
-
+    public void checkOutItem(int itemID, int userID)
+    {
+        checkoutTracker.checkOutItem(userID, libraryCatalog.getItem(itemID));
     }
 
     public void payFine(double amount){
@@ -76,8 +82,12 @@ class librarySystem  {
 
     }
 
-    public void requestItem(int itemID){
-
+    public boolean requestItem(int itemID)
+    {
+        if(libraryCatalog.itemChecker(itemID))
+            return false;//Item exist, no need to request
+        else
+            return true;//Item does not exist
     }
 
     public boolean renewItem(int itemID, int userID){
@@ -86,15 +96,20 @@ class librarySystem  {
 
     }
 
-    public void returnItem(int itemID, int userID){
-
+    public void returnItem(int itemID, int userID)
+    {
+        checkoutTracker.returnItem(itemID, userID);
     }
 
-    public double outStandingFine(int userID){
-        //placeholder
-        return userID;
+    public double outStandingFine(int userID)
+    {
+        return 0;
+        //ArrayList<CheckOutAble> outstandingItemList = checkoutTracker.outStandingFine(userID);
+    }
 
-
+    public ArrayList<CheckOutAble> getItemList()
+    {
+        return libraryCatalog.showCatalog();
     }
 
 
