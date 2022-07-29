@@ -1,3 +1,4 @@
+import java.awt.print.Book;
 import java.io.*;
 import java.net.IDN;
 import java.text.DateFormat;
@@ -50,8 +51,16 @@ public class checkoutTracker {
     }
 
     
-    public void checkOutItem(int userID, ArrayList<CheckOutAble> itemID){
-        checkoutLog.put(userID, itemID);
+    public void checkOutItem(int userID, CheckOutAble item)
+    {
+        if(checkoutLog.containsKey(userID))
+            checkoutLog.get(userID).add(item);
+        else
+        {
+            ArrayList<CheckOutAble> itemList = new ArrayList<CheckOutAble>();
+            itemList.add(item);
+            checkoutLog.put(userID,itemList);
+        }
     }
 
     public boolean renewItem(int itemID, int userID){
@@ -136,12 +145,51 @@ public class checkoutTracker {
 
     
 
-    public double outStandingFine (int userID){
-        //placeholder
+    public ArrayList<CheckOutAble> outStandingFine (int userID)
+    {
 
+        ArrayList<CheckOutAble> overdueList = new ArrayList<>();
+        //Get today date to compare
+        String currentDateString = "";
+        try
+        {
+            Date currentDate = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+            DateFormat outPutFormat = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+            currentDateString = dateFormat.format(outPutFormat.parse(currentDate.toString()));
 
-        return userID;
+            for(CheckOutAble item: checkoutLog.get(userID))
+            {
+                // getting difference in time from both date classes
+                long difference_In_Time = currentDate.getTime() - item.getDateCheckout().getTime();
 
+                // getting difference in time to days (int)
+                long difference_In_Days = (difference_In_Time / (1000*60*60*24)) % 365;
+
+                if(item instanceof book)// If item is a book
+                {
+                    if(((book) item).isBestSeller())
+                    {
+                        if(difference_In_Days > 14)
+                            overdueList.add(item);
+                    }
+                    else
+                    {
+                        if(difference_In_Days > 21)
+                            overdueList.add(item);
+                    }
+                }
+                else if(item instanceof video || item instanceof audio)// If item is a audio/video material
+                    if(difference_In_Days > 14)
+                        overdueList.add(item);
+            }
+
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        return overdueList;
     }
 
 
