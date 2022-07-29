@@ -31,7 +31,7 @@ public class checkoutTracker {
                 //Item ID will always be odd index number
                 int id = Integer.parseInt(logLine[0]);
                 ArrayList<CheckOutAble> items = new ArrayList<CheckOutAble>();
-                for(int i = 1; i < logLine.length; i++ )
+                for(int i = 1; i < logLine.length; i++)
                 {
                     Date checkoutDate = new SimpleDateFormat("MM/dd/yyyy").parse(logLine[i]);
                     i += 1;
@@ -54,7 +54,9 @@ public class checkoutTracker {
     public void checkOutItem(int userID, CheckOutAble item)
     {
         if(checkoutLog.containsKey(userID))
+        {
             checkoutLog.get(userID).add(item);
+        }
         else
         {
             ArrayList<CheckOutAble> itemList = new ArrayList<CheckOutAble>();
@@ -69,7 +71,7 @@ public class checkoutTracker {
 
     }
 
-    public boolean checkOutStandingRequest(int itemID, int userID){
+    public boolean checkOutStandingRequest(int itemID){
         //placeholder
         return true;
 
@@ -88,7 +90,8 @@ public class checkoutTracker {
             //Iterate through checked out items
             for (CheckOutAble item : checkoutLog.get(userID)) {
                
-                if (item.getID() == itemID) {
+                if (item.getID() == itemID)
+                {
                     System.out.println("Item ID is returned.");
                     removeItem = true;
                     itemToRemoveIndex = checkoutLog.get(userID).indexOf(item);
@@ -141,25 +144,21 @@ public class checkoutTracker {
      {
 
      }
-        
 
-    
-
-    public ArrayList<CheckOutAble> outStandingFine (int userID)
+    public ArrayList<CheckOutAble> outStandingFine (int userID, HashMap<Integer,Integer> itemList)
     {
-
         ArrayList<CheckOutAble> overdueList = new ArrayList<>();
         //Get today date to compare
         String currentDateString = "";
         try
         {
             Date currentDate = new Date();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-            DateFormat outPutFormat = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
-            currentDateString = dateFormat.format(outPutFormat.parse(currentDate.toString()));
 
             for(CheckOutAble item: checkoutLog.get(userID))
             {
+                //Assign value to item
+                item.setValue(itemList.get(item.getID()));
+
                 // getting difference in time from both date classes
                 long difference_In_Time = currentDate.getTime() - item.getDateCheckout().getTime();
 
@@ -248,7 +247,11 @@ public class checkoutTracker {
         
     }
 
-    
+    //Get user list of checkoutItem
+    public ArrayList<CheckOutAble> getCheckoutItems(int userID)
+    {
+        return checkoutLog.get(userID);
+    }
     
    
 
