@@ -19,7 +19,17 @@ class paymentTracker{
           Date checkedOut = overdueLog.get(index).getDateCheckout();
 
           // durationLimit (after x days fees begin incurring)
-          int durationLimit = overdueLog.get(index).getDurationLimit();
+          int durationLimit;
+
+          String id = Integer.toString(overdueLog.get(index).getID());
+          char result = id.charAt(4);
+
+          if (result == '1'){
+              durationLimit = 14;
+          }
+          else{
+              durationLimit = 21;
+          }
 
           // getting difference in time from both date classes
           long difference_In_Time = currentDate.getTime() - checkedOut.getTime();
@@ -31,19 +41,16 @@ class paymentTracker{
           // begin incurring fees
 
           if(difference_In_Days > durationLimit){
-              double tempTotal = 0;
+              double tempTotal = (difference_In_Days - durationLimit) * .10;
               double itemValue = overdueLog.get(index).getValue();
-
-              tempTotal += (.10 * difference_In_Days);
 
               // ensuring overdue fees can not exceed item price value
 
               if(tempTotal > itemValue){
-                  tempTotal = itemValue;
-                  grandTotal += tempTotal;
+                  grandTotal += itemValue;
               }
               else{
-                  grandTotal = tempTotal;
+                  grandTotal += tempTotal;
               }
           }
       }
