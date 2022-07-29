@@ -72,24 +72,25 @@ public class checkoutTracker {
     
     //Return an item
     public void returnItem(int itemID, int userID){
-        for (Map.Entry<Integer,ArrayList<CheckOutAble>> entry : checkoutLog.entrySet()){
-
-            System.out.println("key + " + entry.getKey());
-            for (CheckOutAble iD : entry.getValue()){
-
-                
-
-                if (entry.getKey() == userID && iD.getID() == itemID ){
-                    System.out.println("Item ID Returned");
-                    checkoutLog.get(userID).remove(itemID);
-                    break;
-                }  
-                    
-                }
-
-            }
-           
+        //Contains userID
+        if (checkoutLog.containsKey(userID)) {
+            System.out.println("Before: ");
+checkoutLog.get(userID).forEach(book -> System.out.print(book.getID() + " "));
+    for (CheckOutAble item : checkoutLog.get(userID)) {
+        if (checkoutLog.get(userID).contains(item)) { 
+        System.out.println("Item with ID + " + itemID + " found");
+        checkoutLog.get(userID).remove(item);
         }
+    }
+              System.out.println("After: "); 
+              checkoutLog.get(userID).forEach(book -> System.out.print(book.getID() + " "));
+              
+          } 
+            
+        }
+        
+           
+        
 
     
 
