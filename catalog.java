@@ -190,10 +190,11 @@ public class catalog {
         return null;
     }
 
-    public boolean copiesAvailable(int itemID){
+    public boolean copiesDecrement(int itemID){
         for(int index = 0; index < checkOutAbleList.size(); ++index){
             if(checkOutAbleList.get(index).getID() == itemID){
                 if(checkOutAbleList.get(index).getCopies() >= 1){
+                    checkOutAbleList.get(index).decreaseCopy(1);
                     return true;
                 }
                 else{
