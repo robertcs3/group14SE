@@ -3,6 +3,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 public class checkoutTracker {
 
@@ -61,7 +62,10 @@ public class checkoutTracker {
     }
 
     public boolean renewItem(int itemID, int userID){
-        boolean isRenew = true;
+        boolean isRenew = false;
+        if (checkoutLog.get(userID).contains(isRenew)){
+            
+        }
         return isRenew;
 
     }
@@ -71,16 +75,12 @@ public class checkoutTracker {
         return true;
 
     }
-
+    
+            
+    }
     //Return an item
     public void returnItem(int itemID, int userID){
-        if (checkoutLog.get(userID).contains(item(itemID))){
-            System.out.println("Item ID Returned");
-            checkoutLog.get(userID).remove(item(itemID));
-        } else{
-            System.out.println("item ID cannot be returned since it was not checked out");
-        }
-    
+        
 
     }
 
