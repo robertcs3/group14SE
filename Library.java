@@ -133,6 +133,7 @@ public class Library
 
                                 //Set current user
                                 currentUserID = Integer.parseInt(userID.getText());
+                                system.setCurrentUser(currentUserID);
                                 fines = ""+system.outStandingFine(currentUserID);
 
                                 //Clear text fields
@@ -143,7 +144,6 @@ public class Library
                                 mainFrame.setTitle("User Menu");
                                 mainFrame.setSize(700,600);
                                 cardLayout.show(mainPanel, "User");
-
                                 //LOG IN SUCCESSFUL++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             }
                             else//wrong password
@@ -323,7 +323,7 @@ public class Library
         JButton requestItem = new JButton("Request Item");
         JButton payFine = new JButton("Pay Fines");
         JButton LogOut = new JButton("Log Out");
-        JLabel finesOwn = new JLabel("Fine: $0", SwingConstants.CENTER);
+        JLabel finesOwn = new JLabel("Fine: $", SwingConstants.CENTER);
 
         //Add new components
         userPanel.add(new JLabel());//Blank component for padding

@@ -5,13 +5,13 @@ import java.util.HashMap;
 class librarySystem  {
 
     ArrayList<libraryCard> memberList = new ArrayList<>();
-
+    libraryCard currentUser;
     //Initialize sub systems
     catalog libraryCatalog = new catalog();
     paymentTracker paymentSystem = new paymentTracker();
     checkoutTracker checkoutTracker = new checkoutTracker();
 
-    public librarySystem()
+    public librarySystem() //DONE
     {
         //Read existing users into ArrayList memberList
         try
@@ -38,7 +38,7 @@ class librarySystem  {
         }
     }
 
-    //For new user signing up
+    //For new user signing up DONE
     public void signUp(int id, String firstName, String lastName, String password, String address, String phoneNumber, int age)
     {
         try
@@ -63,14 +63,14 @@ class librarySystem  {
         }
     }
 
-    //For existing user
+    //For existing user DONE
     public void signIn(int id, String firstName, String lastName, String password, String address, String phoneNumber, Boolean isChild)
     {
         libraryCard newUser = new libraryCard(firstName, lastName, address, phoneNumber, isChild);
         memberList.add(newUser);
     }
 
-    public void checkOutItem(int itemID, int userID)
+    public void checkOutItem(int itemID, int userID)//MODIFY AN
     {
         checkoutTracker.checkOutItem(userID, libraryCatalog.getItem(itemID));
         libraryCatalog.copiesDecrement(itemID);
@@ -84,18 +84,15 @@ class librarySystem  {
 
     }
 
-    public boolean requestItem(int itemID)
+    public boolean requestItem(int itemID)//BRANDON
     {
-        if(libraryCatalog.itemChecker(itemID))
-            return false;//Item exist, no need to request
-        else
-            return true;//Item does not exist
+        return false;
     }
 
-    public boolean renewItem(int itemID, int userID){//DO IT TODAY
+    public boolean renewItem(int itemID)//DO IT TODAY
+    {
         //placeholder
         return true;
-
     }
 
     public void returnItem(int itemID, int userID)
@@ -103,6 +100,7 @@ class librarySystem  {
         checkoutTracker.returnItem(itemID, userID);
     }
 
+    //DONE
     public double outStandingFine(int userID)
     {
         HashMap<Integer,Integer> itemValueList = new HashMap<>();
@@ -111,7 +109,8 @@ class librarySystem  {
             itemValueList.put(item.getID(), item.getValue());
         }
         ArrayList<CheckOutAble> outstandingItemList = checkoutTracker.outStandingFine(userID, itemValueList);
-        return paymentSystem.billTotal(outstandingItemList);
+        double returnValue = paymentSystem.billTotal(outstandingItemList);
+        return returnValue;
     }
 
     public ArrayList<CheckOutAble> getItemList()
@@ -124,7 +123,10 @@ class librarySystem  {
         return checkoutTracker.getCheckoutItems(userID);
     }
 
-
+    public void setCurrentUser(int id)
+    {
+        currentUser = memberList.get(memberList.indexOf(id));
+    }
 
     
   
