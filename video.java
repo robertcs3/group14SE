@@ -10,7 +10,7 @@ public class video implements  CheckOutAble{
     boolean isRenew = false;
 
     //Default constructor
-    public video(int itemID, int value, int copies, String name)
+    public video(int itemID, String name, int value, int copies)
     {
         //Set video's values
         this.itemID = itemID;

@@ -1,13 +1,19 @@
 public class referenceBook implements UnCheckoutAble
 {
+    private int id;
     private String name;
-    private double value;
+    private int value;
 
-    public referenceBook(String name, double value)
+    public referenceBook(int id, String name, int value)
     {
+        this.id = id;
         this.name = name;
         this.value = value;
     }
+
+    public void setId(int id) { this.id = id; }
+
+    public int getId() { return id; }
 
     @Override
     public void setName(String name) {
@@ -15,7 +21,7 @@ public class referenceBook implements UnCheckoutAble
     }
 
     @Override
-    public void setValue(double value) {
+    public void setValue(int value) {
         this.value = value;
     }
 
@@ -25,7 +31,7 @@ public class referenceBook implements UnCheckoutAble
     }
 
     @Override
-    public double getValue() {
+    public int getValue() {
         return value;
     }
 }
