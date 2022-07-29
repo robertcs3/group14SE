@@ -49,7 +49,7 @@ public class checkoutTracker {
     }
 
     
-    public void checkOutItem(ArrayList<CheckOutAble> itemID, int userID){
+    public void checkOutItem(int userID, ArrayList<CheckOutAble> itemID){
         checkoutLog.put(userID, itemID);
     }
 
@@ -73,7 +73,11 @@ public class checkoutTracker {
     //Return an item
     public void returnItem(int itemID, int userID){
         for (Map.Entry<Integer,ArrayList<CheckOutAble>> entry : checkoutLog.entrySet()){
+
+            System.out.println("Current key: + " + entry.getKey());
             for (CheckOutAble iD : entry.getValue()){
+
+                System.out.println(iD);
 
                 if (entry.getKey().equals(userID) && iD.equals(itemID) ){
                     System.out.println("Item ID Returned");
@@ -150,6 +154,8 @@ public class checkoutTracker {
 
     public static void main(String[] args)//Temporary for testing
     {
+
+    
         
         checkoutTracker ret = new checkoutTracker();
         ret.returnItem(40791, 6730387);
