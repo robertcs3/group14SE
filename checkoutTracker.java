@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.IDN;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,10 +78,26 @@ public class checkoutTracker {
     }
     
             
-    }
+    
     //Return an item
     public void returnItem(int itemID, int userID){
-        
+        for (Map.Entry<Integer,ArrayList<CheckOutAble>> entry : checkoutLog.entrySet()){
+            for (CheckOutAble iD : entry.getValue()){
+
+                if (entry.getKey().equals(userID) && iD.equals(itemID) ){
+                    System.out.println("Item ID Returned");
+                    checkoutLog.get(userID).remove(itemID);
+                    break;
+                } 
+                
+
+
+
+                }
+
+            }
+            System.out.println("Item ID cannot be returned as it was not checked out");
+        }
 
     }
 
