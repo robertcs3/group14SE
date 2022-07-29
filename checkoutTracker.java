@@ -48,16 +48,7 @@ public class checkoutTracker {
         
     }
 
-    public void testTest()
-    {
-        for(int id: checkoutLog.keySet())
-        {
-            for(CheckOutAble item: checkoutLog.get(id))
-            {
-                System.out.println(item.getName());
-            }
-        }
-    }
+    
     public void checkOutItem(ArrayList<CheckOutAble> itemID, int userID){
         checkoutLog.put(userID, itemID);
     }
@@ -99,7 +90,7 @@ public class checkoutTracker {
             System.out.println("Item ID cannot be returned as it was not checked out");
         }
 
-    }
+    
 
     public double outStandingFine (int userID){
         //placeholder
@@ -159,8 +150,9 @@ public class checkoutTracker {
 
     public static void main(String[] args)//Temporary for testing
     {
-        checkoutTracker ch = new checkoutTracker();
-        ch.testTest();
+        
+        checkoutTracker ret = new checkoutTracker();
+        ret.returnItem(40791, 6730387);
     }
 
     
