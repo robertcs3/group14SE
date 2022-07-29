@@ -48,9 +48,6 @@ public class Library
 
         //Add panels into cardlayout
         mainPanel.add(mainMenuPanel, "Main");//Add main menu to card layout with name "Main"
-        mainPanel.add(loginMenuGUI(mainFrame, mainPanel, cardLayout), "Log In");
-        mainPanel.add(signUpMenuGUI(mainFrame, mainPanel, cardLayout), "Sign Up");
-        mainPanel.add(userMenuGUI(mainFrame, mainPanel, cardLayout), "User");
         mainFrame.add(mainPanel);
 
         //Set mainFrame visible and normal operations
@@ -70,6 +67,7 @@ public class Library
         login.addActionListener(new ActionListener() { //LOG IN
             @Override
             public void actionPerformed(ActionEvent e) {
+                mainPanel.add(loginMenuGUI(mainFrame, mainPanel, cardLayout), "Log In");
                 mainFrame.setSize(600,200);
                 mainFrame.setTitle("Log In");
                 cardLayout.show(mainPanel,"Log In");
@@ -79,6 +77,7 @@ public class Library
         signUp.addActionListener(new ActionListener() { //SIGN UP
             @Override
             public void actionPerformed(ActionEvent e) {
+                mainPanel.add(signUpMenuGUI(mainFrame, mainPanel, cardLayout), "Sign Up");
                 mainFrame.setTitle("Sign Up");
                 mainFrame.setSize(400,500);
                 cardLayout.show(mainPanel, "Sign Up");
@@ -141,6 +140,7 @@ public class Library
                                 password.setText("");
 
                                 //Set main frame size and set menu to User Menu
+                                mainPanel.add(userMenuGUI(mainFrame, mainPanel, cardLayout), "User");
                                 mainFrame.setTitle("User Menu");
                                 mainFrame.setSize(700,600);
                                 cardLayout.show(mainPanel, "User");
@@ -270,6 +270,7 @@ public class Library
 
                         //set current user
                         currentUserID = id;
+                        system.setCurrentUser(currentUserID);
 
                         //LOG IN SUCCESSFUL++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -281,6 +282,7 @@ public class Library
                         age.setText("");
 
                         //Set size and swap to User Menu
+                        mainPanel.add(userMenuGUI(mainFrame, mainPanel, cardLayout), "User");
                         mainFrame.setTitle("User Menu");
                         mainFrame.setSize(700,600);
                         cardLayout.show(mainPanel, "User");
@@ -310,11 +312,12 @@ public class Library
     {
         //GUI START--------------------------------------------------------------------------------------
 
-        GridLayout userLayout = new GridLayout(5,3);
-
+        GridLayout userLayout = new GridLayout(6,3);
         //Initialize new components
         JPanel userPanel = new JPanel();
         userPanel.setLayout(userLayout);//Set layout for panel
+
+        //Functions
         JLabel welcomeLabel = new JLabel("Welcome Back User " + currentUserID, SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("", Font.BOLD, 30));
         JButton requestRenew = new JButton("Request Renew");
@@ -322,8 +325,9 @@ public class Library
         JButton returnItem = new JButton("Return Item");
         JButton requestItem = new JButton("Request Item");
         JButton payFine = new JButton("Pay Fines");
+        JButton getInfo = new JButton("User Info");
         JButton LogOut = new JButton("Log Out");
-        JLabel finesOwn = new JLabel("Fine: $", SwingConstants.CENTER);
+        JLabel finesOwn = new JLabel("Outstanding Fine: $"+fines, SwingConstants.CENTER);
 
         //Add new components
         userPanel.add(new JLabel());//Blank component for padding
@@ -337,7 +341,10 @@ public class Library
         userPanel.add(requestItem);
         userPanel.add(payFine);
         userPanel.add(new JLabel());//Blank component for padding
+        userPanel.add(getInfo);
+        userPanel.add(new JLabel());
         userPanel.add(LogOut);
+        userPanel.add(new JLabel());
         userPanel.add(new JLabel());//Blank component for padding
         userPanel.add(finesOwn);
 
@@ -353,6 +360,50 @@ public class Library
                 listOfItems.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
                 listOfItems.setLayoutOrientation(JList.HORIZONTAL_WRAP);
                 listOfItems.setVisibleRowCount(-1);
+            }
+        });
+
+        getInfo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                GridLayout infoLayout =  new GridLayout(4,2);
+
+                JFrame subFrame = new JFrame(system.getCurrentUser().getLastName() +" Info");
+                JPanel infoPanel = new JPanel();
+                infoPanel.setLayout(infoLayout);
+
+                //Components
+                JLabel firstName, lastName, phoneNumberLabel, isChildLabel, idLabel;
+                idLabel = new JLabel("ID Number: "+ system.getCurrentUser().getID()+"");
+                firstName = new JLabel( "First Name: " + system.getCurrentUser().getFirstName());
+                lastName = new JLabel("Last Name: " + system.getCurrentUser().getLastName());
+                JTextArea addressLabel = new JTextArea();
+                phoneNumberLabel = new JLabel("Phone Number: " + system.getCurrentUser().getPhoneNumber());
+                isChildLabel = new JLabel("Child: " + system.getCurrentUser().isChild()+"");
+
+                //Configure jtextarea
+                addressLabel.setWrapStyleWord(true);
+                addressLabel.setLineWrap(true);
+                addressLabel.setOpaque(false);
+                addressLabel.setEditable(false);
+                addressLabel.setFocusable(false);
+                addressLabel.setText("Address: " +system.getCurrentUser().getAddress().substring(1,system.getCurrentUser().getAddress().length()-1));
+                addressLabel.setFont(new Font("", Font.BOLD, 12));
+
+                infoPanel.add(idLabel);
+                infoPanel.add(phoneNumberLabel);
+                infoPanel.add(firstName);
+                infoPanel.add(lastName);
+                infoPanel.add(addressLabel);
+                infoPanel.add(isChildLabel);
+
+                subFrame.add(infoPanel);
+                subFrame.setVisible(true);
+                subFrame.setSize(300,400);
+                subFrame.setLocationRelativeTo(null);//Set location of window to middle of screen
+                subFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
             }
         });
 

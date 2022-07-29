@@ -1,16 +1,17 @@
 class libraryCard{
 
 
+    private int userID;
     private String firstName;
     private String lastName;
     private String address;
     private String phoneNumber;
     private boolean isChild;
     private double fine;
-    private int cardNumber;
   
-    public libraryCard(String firstName, String lastName, String address,String phoneNumber, int age)
+    public libraryCard(int id, String firstName, String lastName, String address,String phoneNumber, int age)
     {
+        userID = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -21,8 +22,9 @@ class libraryCard{
             isChild = false;
     }
 
-    public libraryCard(String firstName, String lastName, String address,String phoneNumber, Boolean isChild)
+    public libraryCard(int id, String firstName, String lastName, String address,String phoneNumber, Boolean isChild)
     {
+        userID = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -30,7 +32,7 @@ class libraryCard{
         this.isChild = isChild;
     }
 
-    public String getName(){
+    public String getFirstName(){
         return firstName;
       }
   
@@ -43,7 +45,7 @@ class libraryCard{
       }
   
     public int  getID(){
-        return cardNumber;
+        return userID;
       }
   
     public String  getPhoneNumber(){

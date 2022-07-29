@@ -25,10 +25,10 @@ class librarySystem  {
                 String firstName = user[1];
                 String lastName = user[2];
                 String password = user[3];
-                String phoneNUmber = user[4];
-                String address = user[5];
-                Boolean isChild = Boolean.parseBoolean(user[6]);
-                signIn(id, firstName, lastName, password, phoneNUmber, address, isChild);
+                String phoneNumber = user[4];
+                String address = user[5] +"," + user[6] +","+user[7] +","+ user[8];
+                Boolean isChild = Boolean.parseBoolean(user[9]);
+                signIn(id, firstName, lastName, password, address, phoneNumber, isChild);
             }
             fileReader.close();
         }
@@ -43,7 +43,7 @@ class librarySystem  {
     {
         try
         {
-            libraryCard newUser = new libraryCard(firstName, lastName, address, phoneNumber, age);
+            libraryCard newUser = new libraryCard(id, firstName, lastName, address, phoneNumber, age);
             memberList.add(newUser);
             //Write to user.csv
             BufferedWriter fileToWrite = new BufferedWriter(new FileWriter("user.csv", true));
@@ -66,7 +66,7 @@ class librarySystem  {
     //For existing user DONE
     public void signIn(int id, String firstName, String lastName, String password, String address, String phoneNumber, Boolean isChild)
     {
-        libraryCard newUser = new libraryCard(firstName, lastName, address, phoneNumber, isChild);
+        libraryCard newUser = new libraryCard(id, firstName, lastName, address, phoneNumber, isChild);
         memberList.add(newUser);
     }
 
@@ -125,7 +125,19 @@ class librarySystem  {
 
     public void setCurrentUser(int id)
     {
-        currentUser = memberList.get(memberList.indexOf(id));
+        for(libraryCard member: memberList)
+        {
+            if(member.getID() == id)
+            {
+                currentUser = member;
+            }
+        }
+
+    }
+
+    public libraryCard getCurrentUser()
+    {
+        return currentUser;
     }
 
     
