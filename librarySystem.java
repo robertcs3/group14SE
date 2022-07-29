@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 class librarySystem  {
 
@@ -72,9 +73,10 @@ class librarySystem  {
     public void checkOutItem(int itemID, int userID)
     {
         checkoutTracker.checkOutItem(userID, libraryCatalog.getItem(itemID));
+        libraryCatalog.copiesDecrement(itemID);
     }
 
-    public void payFine(double amount){
+    public void payFine(double amount){//BRANDON DOING IT
 
     }
 
@@ -90,7 +92,7 @@ class librarySystem  {
             return true;//Item does not exist
     }
 
-    public boolean renewItem(int itemID, int userID){
+    public boolean renewItem(int itemID, int userID){//DO IT TODAY
         //placeholder
         return true;
 
@@ -103,13 +105,24 @@ class librarySystem  {
 
     public double outStandingFine(int userID)
     {
-        return 0;
-        //ArrayList<CheckOutAble> outstandingItemList = checkoutTracker.outStandingFine(userID);
+
+        HashMap<Integer,Integer> itemValueList = new HashMap<>();
+        for(CheckOutAble item: libraryCatalog.showCatalog())
+        {
+            itemValueList.put(item.getID(), item.getValue());
+        }
+        ArrayList<CheckOutAble> outstandingItemList = checkoutTracker.outStandingFine(userID, itemValueList);
+        return paymentSystem.billTotal(outstandingItemList);
     }
 
     public ArrayList<CheckOutAble> getItemList()
     {
         return libraryCatalog.showCatalog();
+    }
+
+    public ArrayList<CheckOutAble> getCheckoutItems(int userID)
+    {
+        return checkoutTracker.getCheckoutItems(userID);
     }
 
 
