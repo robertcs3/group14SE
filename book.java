@@ -104,4 +104,5 @@ public class book implements  CheckOutAble
     {
         dateCheckout = checkoutDate;
     }
+    public void setValue(int value){itemValue = value;}
 }

@@ -15,4 +15,5 @@ public interface CheckOutAble
     public void decreaseCopy(int amount);
     public double getValue();
     public void setDateCheckout(Date checkoutDate);
+    public void setValue(int value);
 }

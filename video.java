@@ -81,6 +81,8 @@ public class video implements  CheckOutAble{
         return itemValue;
     }
 
+    public void setValue(int value){itemValue = value;}
+
     public void setDateCheckout(Date checkoutDate)
     {
         dateCheckout = checkoutDate;

@@ -19,6 +19,7 @@ public class audio implements CheckOutAble{
         this.name = name;
         this.copies = copies;
     }
+    public void setValue(int value){itemValue = value;}
 
     @Override
     public void setRenewStatus(boolean status) {
