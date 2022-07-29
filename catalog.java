@@ -189,4 +189,18 @@ public class catalog {
         }
         return null;
     }
+
+    public boolean copiesAvailable(int itemID){
+        for(int index = 0; index < checkOutAbleList.size(); ++index){
+            if(checkOutAbleList.get(index).getID() == itemID){
+                if(checkOutAbleList.get(index).getCopies() >= 1){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
 }
