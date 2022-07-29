@@ -43,7 +43,7 @@ public class checkoutTracker {
             }
 
         } catch (Exception e){
-    
+            System.out.println("HEREER");
             e.printStackTrace();
         }
 

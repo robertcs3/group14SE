@@ -9,6 +9,8 @@ public class Library
 {
     private ArrayList<Integer> userIDList = new ArrayList<Integer>();
     private ArrayList<String> passwordList = new ArrayList<String>();
+    //currentUser
+    int currentUserID = 0;
     //Initialize Library System
     librarySystem system = new librarySystem();
     public Library()
@@ -127,6 +129,9 @@ public class Library
                             if(passwordList.contains(pass))//Everything pass validation
                             {
                                 //LOG IN SUCCESSFUL++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                                //Set current user
+                                currentUserID = Integer.parseInt(userID.getText());
 
                                 //Clear text fields
                                 userID.setText("");
@@ -261,6 +266,8 @@ public class Library
                         //Write to login.csv
                         system.signUp(id, firstName, lastName, passWd, addressString, phoneNumber, userAge);
 
+                        //set current user
+                        currentUserID = id;
 
                         //LOG IN SUCCESSFUL++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -306,7 +313,7 @@ public class Library
         //Initialize new components
         JPanel userPanel = new JPanel();
         userPanel.setLayout(userLayout);//Set layout for panel
-        JLabel welcomeLabel = new JLabel("Welcome Back", SwingConstants.CENTER);
+        JLabel welcomeLabel = new JLabel("Welcome Back User " + currentUserID, SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("", Font.BOLD, 30));
         JButton requestRenew = new JButton("Request Renew");
         JButton checkoutItem = new JButton("Checkout Item");
@@ -334,7 +341,22 @@ public class Library
 
         //GUI END--------------------------------------------------------------------------------------
 
+        //Get user's fine if exist
+        finesOwn.setText(""+system.outStandingFine(currentUserID));
+
         //Set function for buttons
+        returnItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ArrayList<CheckOutAble> itemList = system.getCheckoutItems(currentUserID);
+                JList listOfItems = new JList();
+                DefaultListModel<CheckOutAble> listModel = new DefaultListModel<>();
+                listOfItems.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+                listOfItems.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+                listOfItems.setVisibleRowCount(-1);
+            }
+        });
+
         LogOut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
