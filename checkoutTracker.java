@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.IDN;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,7 +32,7 @@ public class checkoutTracker {
                 ArrayList<CheckOutAble> items = new ArrayList<CheckOutAble>();
                 for(int i = 1; i < logLine.length; i++ )
                 {
-                    Date checkoutDate = new SimpleDateFormat("mm/dd/yyyy").parse(logLine[i]);
+                    Date checkoutDate = new SimpleDateFormat("MM/dd/yyyy").parse(logLine[i]);
                     i += 1;
                     CheckOutAble itemToAdd = this.item(Integer.parseInt(logLine[i]));
                     itemToAdd.setDateCheckout(checkoutDate);
@@ -73,28 +74,64 @@ public class checkoutTracker {
         if (checkoutLog.containsKey(userID)) {
             //Initialize temp arraylist
             ArrayList<CheckOutAble> newItems = new ArrayList<>();
+            boolean removeItem = false;
+            int itemToRemoveIndex = 0;
             //Iterate through checked out items
             for (CheckOutAble item : checkoutLog.get(userID)) {
                
                 if (item.getID() == itemID) {
                     System.out.println("Item ID is returned.");
-                    continue;
+                    removeItem = true;
+                    itemToRemoveIndex = checkoutLog.get(userID).indexOf(item);
+                    break;
                 }
-                 //Add unmatched itemID to newItems
-                newItems.add(item);
             }
-            //Update checked out items if needed
-            if (newItems.size() != checkoutLog.get(userID).size()){
-                checkoutLog.put(userID, newItems);
-            }else{
-                System.out.println("Invalid item ID");
-            } 
+
+            //Remove item from record and write new info to file
+            if(removeItem == true)
+            {
+                try
+                {
+                    //Format Date output to MM/dd/yyyy to write to file
+                    DateFormat writeFormat = new SimpleDateFormat("MM/dd/yyyy");
+                    DateFormat outPutFormat = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+
+                    //Remove item with the date from the Hashmap
+                    checkoutLog.get(userID).remove(itemToRemoveIndex);
+
+                    //Rewrite the data in checkoutLog.csv
+                    String writeToFileString = "";
+                     for(int id: checkoutLog.keySet())
+                    {
+                        writeToFileString += ""+id;
+                        for(CheckOutAble itemToWrite: checkoutLog.get(id))
+                        {
+                            writeToFileString += "," + writeFormat.format(outPutFormat.parse(itemToWrite.getDateCheckout().toString())) + ",";//date
+                            writeToFileString += itemToWrite.getID();//item id
+                        }
+                        writeToFileString +="\n";
+                    }
+
+                    //Write to file
+                    BufferedWriter fileToWrite = new BufferedWriter(new FileWriter("checkoutLog.csv", true));
+                    fileToWrite.write(writeToFileString);
+                    fileToWrite.close();
+                    System.out.println(writeToFileString);
+                }
+                catch(Exception e)
+                {
+                    System.out.println(e);
+                }
+            }
         } else {
             System.out.println("Invalid user ID.");
         }
-        }
+    }
         
-           
+     public void testTEst()
+     {
+
+     }
         
 
     
@@ -157,7 +194,8 @@ public class checkoutTracker {
     public static void main(String[] args)//Temporary for testing
     {
 
-    
+        checkoutTracker checkout = new checkoutTracker();
+        checkout.testTEst();
         
         
     }
