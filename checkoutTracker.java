@@ -54,11 +54,8 @@ public class checkoutTracker {
     }
 
     public boolean renewItem(int itemID, int userID){
-        boolean isRenew = false;
-        if (checkoutLog.get(userID).contains(isRenew)){
-            
-        }
-        return isRenew;
+        //placeholder
+        return true;
 
     }
 
@@ -74,19 +71,27 @@ public class checkoutTracker {
     public void returnItem(int itemID, int userID){
         //Contains userID
         if (checkoutLog.containsKey(userID)) {
-            System.out.println("Before: ");
-checkoutLog.get(userID).forEach(book -> System.out.print(book.getID() + " "));
-    for (CheckOutAble item : checkoutLog.get(userID)) {
-        if (checkoutLog.get(userID).contains(item)) { 
-        System.out.println("Item with ID + " + itemID + " found");
-        checkoutLog.get(userID).remove(item);
+            //Initialize temp arraylist
+            ArrayList<CheckOutAble> newItems = new ArrayList<>();
+            //Iterate through checked out items
+            for (CheckOutAble item : checkoutLog.get(userID)) {
+               
+                if (item.getID() == itemID) {
+                    System.out.println("Item ID is returned.");
+                    continue;
+                }
+                 //Add unmatched itemID to newItems
+                newItems.add(item);
+            }
+            //Update checked out items if needed
+            if (newItems.size() != checkoutLog.get(userID).size()){
+                checkoutLog.put(userID, newItems);
+            }else{
+                System.out.println("Invalid item ID");
+            } 
+        } else {
+            System.out.println("Invalid user ID.");
         }
-    }
-              System.out.println("After: "); 
-              checkoutLog.get(userID).forEach(book -> System.out.print(book.getID() + " "));
-              
-          } 
-            
         }
         
            
@@ -108,7 +113,6 @@ checkoutLog.get(userID).forEach(book -> System.out.print(book.getID() + " "));
         //Store in 2 arraylist: userIDList and passwordList
         try
         {
-
             String line = "";
             //Check item is in book
             BufferedReader fileReader = new BufferedReader(new FileReader("book.csv"));
@@ -155,8 +159,7 @@ checkoutLog.get(userID).forEach(book -> System.out.print(book.getID() + " "));
 
     
         
-        checkoutTracker ret = new checkoutTracker();
-        ret.returnItem(40791, 1081117);
+        
     }
 
     
