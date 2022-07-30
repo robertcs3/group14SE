@@ -80,7 +80,7 @@ public class book implements  CheckOutAble
     }
 
     @Override
-    public void addCopies(int amount) {
+    public void increaseCopy(int amount) {
         copies += amount;
     }
 

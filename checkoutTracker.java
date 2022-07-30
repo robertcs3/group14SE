@@ -15,7 +15,13 @@ public class checkoutTracker {
     BufferedReader br = null;
    
     int count = 0;
+    //For checked out items
     HashMap<Integer, ArrayList<CheckOutAble>> checkoutLog = new HashMap<Integer, ArrayList<CheckOutAble>>();
+
+    //For outstanding requests on an item
+    ArrayList<CheckOutAble> outstandingRequestLog = new ArrayList<CheckOutAble>();
+    
+
 
     //Constructor
     public checkoutTracker() {
@@ -31,7 +37,7 @@ public class checkoutTracker {
                 //Item ID will always be odd index number
                 int id = Integer.parseInt(logLine[0]);
                 ArrayList<CheckOutAble> items = new ArrayList<CheckOutAble>();
-                for(int i = 1; i < logLine.length; i++)
+                for(int i = 1; i < logLine.length; i++ )
                 {
                     Date checkoutDate = new SimpleDateFormat("MM/dd/yyyy").parse(logLine[i]);
                     i += 1;
@@ -42,10 +48,23 @@ public class checkoutTracker {
                 checkoutLog.put(id,items);
             }
 
+            //read outstandingRequestLog
+            br = new BufferedReader(new FileReader("outstandingRequest.csv"));
+            String line1 = "";
+            int count = 0;
+            while ((line1 = br.readLine()) != null){
+                String[] values = line.split(",");
+                
+            }
+
+
         } catch (Exception e){
-            System.out.println("HEREER");
+    
             e.printStackTrace();
         }
+
+
+        
 
         
     }
@@ -53,10 +72,11 @@ public class checkoutTracker {
     
     public void checkOutItem(int userID, CheckOutAble item)
     {
+        //Check for outstanding request
+        
+
         if(checkoutLog.containsKey(userID))
-        {
             checkoutLog.get(userID).add(item);
-        }
         else
         {
             ArrayList<CheckOutAble> itemList = new ArrayList<CheckOutAble>();
@@ -65,17 +85,38 @@ public class checkoutTracker {
         }
     }
 
-    public boolean renewItem(int itemID, int userID){
-        //placeholder
+    //Renew an item
+    public boolean renewItem(int itemID, int userID){ 
+        //check for outstanding request on item
+        if (outstandingRequestLog.contains(itemID)){
+            System.out.println("Outstanding request on this item, cannot be renewed");
+            return true;
+        } else if (outStandingFine(userID) != null){ // Check for outstanding fine on users account
+            System.out.println("You currently have an outstanding fine, cannot be renewed");
+            return true;
+        } else{
+            //set checkoutDate to currentDate
+            System.out.println("Item has been renewed");
+        }
         return true;
+        
+
+    }
+    //Check for outstanding request
+    public boolean checkOutStandingRequest(int itemID, int userID){ 
+        if (outstandingRequestLog.contains(itemID)){
+            System.out.println("Outstanding request on item");
+            return true;
+        }
+        System.out.println("No outstanding requests on item");
+        return false;
+        
+        }
+        
 
     }
 
-    public boolean checkOutStandingRequest(int itemID){
-        //placeholder
-        return true;
-
-    }
+    
     
             
     
@@ -90,8 +131,7 @@ public class checkoutTracker {
             //Iterate through checked out items
             for (CheckOutAble item : checkoutLog.get(userID)) {
                
-                if (item.getID() == itemID)
-                {
+                if (item.getID() == itemID) {
                     System.out.println("Item ID is returned.");
                     removeItem = true;
                     itemToRemoveIndex = checkoutLog.get(userID).indexOf(item);
@@ -144,21 +184,25 @@ public class checkoutTracker {
      {
 
      }
+        
 
-    public ArrayList<CheckOutAble> outStandingFine (int userID, HashMap<Integer,Integer> itemList)
+    
+
+    public ArrayList<CheckOutAble> outStandingFine (int userID)
     {
+
         ArrayList<CheckOutAble> overdueList = new ArrayList<>();
         //Get today date to compare
         String currentDateString = "";
         try
         {
             Date currentDate = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+            DateFormat outPutFormat = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+            currentDateString = dateFormat.format(outPutFormat.parse(currentDate.toString()));
 
             for(CheckOutAble item: checkoutLog.get(userID))
             {
-                //Assign value to item
-                item.setValue(itemList.get(item.getID()));
-
                 // getting difference in time from both date classes
                 long difference_In_Time = currentDate.getTime() - item.getDateCheckout().getTime();
 
@@ -247,11 +291,7 @@ public class checkoutTracker {
         
     }
 
-    //Get user list of checkoutItem
-    public ArrayList<CheckOutAble> getCheckoutItems(int userID)
-    {
-        return checkoutLog.get(userID);
-    }
+    
     
    
 

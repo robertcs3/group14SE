@@ -86,6 +86,8 @@ class librarySystem  {
 
     public boolean requestItem(int itemID)//BRANDON
     {
+        // should call libraryCatalog.isRequest(int itemID)
+        // Returns a boolean (True if itemID.getCopies == 0) (False, otherwise)
         return false;
     }
 

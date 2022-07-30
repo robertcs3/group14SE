@@ -59,8 +59,8 @@ public class video implements  CheckOutAble{
         return copies;
     }
 
-    @Override
-    public void addCopies(int amount) {
+
+    public void increaseCopy(int amount){
         copies += amount;
     }
 
