@@ -11,9 +11,6 @@ import java.util.stream.Stream;
 
 
 public class checkoutTracker {
-
-
-
     BufferedReader br = null;
    
     int count = 0;
@@ -57,27 +54,15 @@ public class checkoutTracker {
                     Date checkoutDate = new SimpleDateFormat("MM/dd/yyyy").parse(logLine[i]);
                     i += 1;
                     CheckOutAble itemToAdd = this.item(Integer.parseInt(logLine[i]));
-                    if (outstandingRequestLog.contains(itemToAdd)) {
-                        outstandingRequestLog.get(outstandingRequestLog.indexOf(itemToAdd)).setDateCheckout(checkoutDate);
-                    }
                     itemToAdd.setDateCheckout(checkoutDate);
                     items.add(itemToAdd);
                 }
                 checkoutLog.put(id,items);
             }
-
-           
-
-
         } catch (Exception e){
     
             e.printStackTrace();
         }
-
-
-        
-
-        
     }
 
     
@@ -100,8 +85,8 @@ public class checkoutTracker {
     }
 
     //Renew an item
-    public boolean renewItem(int itemID, int userID){ 
-        librarySystem lib = new librarySystem();
+    public boolean renewItem(int itemID, int userID, librarySystem lib){
+
         //Check for outstanding request on item
         if (checkOutStandingRequest(itemID)) {
             System.out.println("Item has outstanding request, cannot renew");
@@ -162,16 +147,9 @@ public class checkoutTracker {
         }
         return false;
         }
-        
-
-    
-
-    
-    
-            
     
     //Return an item
-    public void returnItem(int itemID, int userID){
+    public void returnItem(int itemID, int userID, catalog libCatalog){
         //Contains userID
         if (checkoutLog.containsKey(userID)) {
             //Initialize temp arraylist
@@ -182,7 +160,6 @@ public class checkoutTracker {
             for (CheckOutAble item : checkoutLog.get(userID)) {
                
                 if (item.getID() == itemID) {
-                    System.out.println("Item ID is returned.");
                     removeItem = true;
                     itemToRemoveIndex = checkoutLog.get(userID).indexOf(item);
                     break;
@@ -194,6 +171,8 @@ public class checkoutTracker {
             {
                 try
                 {
+                    //Decrease amount of copies
+                    libCatalog.copiesDecrement(itemID);
                     //Format Date output to MM/dd/yyyy to write to file
                     DateFormat writeFormat = new SimpleDateFormat("MM/dd/yyyy");
                     DateFormat outPutFormat = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
@@ -229,15 +208,6 @@ public class checkoutTracker {
             System.out.println("Invalid user ID.");
         }
     }
-        
-     public void testTEst()
-     {
-        renewItem(98364, 9882715);
-
-     }
-        
-
-    
 
      public ArrayList<CheckOutAble> outStandingFine (int userID, HashMap<Integer,Integer> itemList)
      {
@@ -330,17 +300,6 @@ public class checkoutTracker {
             System.out.println(e);
         }
         return null;
-    }
-
-    public static void main(String[] args)//Temporary for testing
-    {
-
-        checkoutTracker checkout = new checkoutTracker();
-        checkout.testTEst();
-
-        
-        
-        
     }
 
     //Get user list of checkoutItem

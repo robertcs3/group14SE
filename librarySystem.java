@@ -72,8 +72,7 @@ class librarySystem  {
 
     public void checkOutItem(int itemID, int userID)
     {
-        checkoutTracker.checkOutItem(userID, libraryCatalog.getItem(itemID));
-        libraryCatalog.copiesDecrement(itemID);
+
     }
 
     public void payFine(double amount){//BRANDON DOING IT
@@ -86,20 +85,18 @@ class librarySystem  {
 
     public boolean requestItem(int itemID)//BRANDON
     {
-        // should call libraryCatalog.isRequest(int itemID)
-        // Returns a boolean (True if itemID.getCopies == 0) (False, otherwise)
+
         return false;
     }
 
     public boolean renewItem(int itemID)//DO IT TODAY
     {
-        //placeholder
-        return true;
+        return checkoutTracker.renewItem( itemID, currentUser.getID(),this);
     }
 
-    public void returnItem(int itemID, int userID)
+    public void returnItem(int itemID, int userID)//DONE
     {
-        checkoutTracker.returnItem(itemID, userID);
+        checkoutTracker.returnItem(itemID, userID, libraryCatalog);
     }
 
     //DONE
