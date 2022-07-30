@@ -85,7 +85,17 @@ class librarySystem  {
 
     public boolean requestItem(int itemID)//BRANDON
     {
-
+        if(libraryCatalog.isRequest(itemID)){
+            try {
+                BufferedWriter updatedRequestLog = new BufferedWriter(new FileWriter("outstandingRequest1.csv", true));
+                updatedRequestLog.write(Integer.toString(itemID) + ",");
+                updatedRequestLog.close();
+                return true;
+            }
+            catch (Exception e){
+                System.out.println(e);
+            }
+        }
         return false;
     }
 
@@ -139,6 +149,4 @@ class librarySystem  {
         return currentUser;
     }
 
-    
-  
 }
