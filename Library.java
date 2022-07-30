@@ -451,7 +451,10 @@ public class Library
                         //Get item ID
                         String itemID = list.getSelectedValue().toString();
                         itemID = itemID.substring(0,5);
-                        list.remove(list.getSelectedIndex());
+                        //list.remove(list.getSelectedIndex());
+                        listModel.remove(list.getSelectedIndex());
+                        list.repaint();
+                        list.revalidate();
 
                         //Return item
                         system.returnItem(Integer.parseInt(itemID), currentUserID);
