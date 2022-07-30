@@ -43,7 +43,6 @@ public class checkoutTracker {
             }
 
         } catch (Exception e){
-            System.out.println("HEREER");
             e.printStackTrace();
         }
 
@@ -125,7 +124,7 @@ public class checkoutTracker {
                     }
 
                     //Write to file
-                    BufferedWriter fileToWrite = new BufferedWriter(new FileWriter("checkoutLog.csv", true));
+                    BufferedWriter fileToWrite = new BufferedWriter(new FileWriter("checkoutLog.csv", false));
                     fileToWrite.write(writeToFileString);
                     fileToWrite.close();
                     System.out.println(writeToFileString);
@@ -149,38 +148,40 @@ public class checkoutTracker {
     {
         ArrayList<CheckOutAble> overdueList = new ArrayList<>();
         //Get today date to compare
-        String currentDateString = "";
         try
         {
             Date currentDate = new Date();
-
-            for(CheckOutAble item: checkoutLog.get(userID))
+            if(checkoutLog.containsKey(userID))
             {
-                //Assign value to item
-                item.setValue(itemList.get(item.getID()));
-
-                // getting difference in time from both date classes
-                long difference_In_Time = currentDate.getTime() - item.getDateCheckout().getTime();
-
-                // getting difference in time to days (int)
-                long difference_In_Days = (difference_In_Time / (1000*60*60*24)) % 365;
-
-                if(item instanceof book)// If item is a book
+                ArrayList<CheckOutAble> list = checkoutLog.get(userID);
+                for(CheckOutAble item: checkoutLog.get(userID))
                 {
-                    if(((book) item).isBestSeller())
+                    //Assign value to item
+                    item.setValue(itemList.get(item.getID()));
+
+                    // getting difference in time from both date classes
+                    long difference_In_Time = currentDate.getTime() - item.getDateCheckout().getTime();
+
+                    // getting difference in time to days (int)
+                    long difference_In_Days = (difference_In_Time / (1000*60*60*24)) % 365;
+
+                    if(item instanceof book)// If item is a book
                     {
+                        if(((book) item).isBestSeller())
+                        {
+                            if(difference_In_Days > 14)
+                                overdueList.add(item);
+                        }
+                        else
+                        {
+                            if(difference_In_Days > 21)
+                                overdueList.add(item);
+                        }
+                    }
+                    else if(item instanceof video || item instanceof audio)// If item is a audio/video material
                         if(difference_In_Days > 14)
                             overdueList.add(item);
-                    }
-                    else
-                    {
-                        if(difference_In_Days > 21)
-                            overdueList.add(item);
-                    }
                 }
-                else if(item instanceof video || item instanceof audio)// If item is a audio/video material
-                    if(difference_In_Days > 14)
-                        overdueList.add(item);
             }
 
         }
