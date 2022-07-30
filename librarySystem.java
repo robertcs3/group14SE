@@ -70,9 +70,14 @@ class librarySystem  {
         memberList.add(newUser);
     }
 
-    public void checkOutItem(int itemID, int userID)
+    public boolean checkOutItem(int itemID, int userID)
     {
-
+        for(CheckOutAble item: getItemList())
+        {
+            if(item.getID() == itemID)
+                return checkoutTracker.checkOutItem(userID, item);
+        }
+        return false;
     }
 
     public void payFine(double amount){//BRANDON DOING IT

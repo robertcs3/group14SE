@@ -413,6 +413,7 @@ public class Library
                 //GUI END----------------------------------------------------------------------------------
 
                 //Button function
+                //Renew-----------------------------------------------------------=============================
                 renewItemButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -428,6 +429,8 @@ public class Library
                         }
                     }
                 });
+
+                //Renew-----------------------------------------------------------=============================
 
             }
         });
@@ -617,7 +620,15 @@ public class Library
                     {
                         String itemID = list.getSelectedValue().toString();
                         itemID = itemID.substring(0,5);
-                        system.checkOutItem(currentUserID, Integer.parseInt(itemID));
+                        boolean success = system.checkOutItem(currentUserID, Integer.parseInt(itemID));
+                        if(success == false)
+                        {
+                            JOptionPane.showMessageDialog(checkoutFrame, "Critical Error");
+                        }
+                        else
+                        {
+                            JOptionPane.showMessageDialog(checkoutFrame, "Item Checkout");
+                        }
                     }
                 });
 

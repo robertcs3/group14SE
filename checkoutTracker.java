@@ -66,21 +66,26 @@ public class checkoutTracker {
     }
 
     
-    public void checkOutItem(int userID, CheckOutAble item)
+    public boolean checkOutItem(int userID, CheckOutAble item)
     {
         if(checkOutStandingRequest(item.getID())){
             System.out.println("Item has outstanding request");
-            return;
+            return false;
         }
 
-
         if(checkoutLog.containsKey(userID))
+        {
             checkoutLog.get(userID).add(item);
+            writeData();
+            return true;
+        }
         else
         {
             ArrayList<CheckOutAble> itemList = new ArrayList<CheckOutAble>();
             itemList.add(item);
             checkoutLog.put(userID,itemList);
+            writeData();
+            return true;
         }
     }
 
@@ -89,12 +94,12 @@ public class checkoutTracker {
 
         //Check for outstanding request on item
         if (checkOutStandingRequest(itemID)) {
-            System.out.println("Item has outstanding request, cannot renew");
+            //System.out.println("Item has outstanding request, cannot renew");
             return false;
         }
         //Check for outstanding fine on user account
         if (lib.outStandingFine(userID) > 0.0) {
-            System.out.println("User has outstanding fines, cannot renew");
+            //System.out.println("User has outstanding fines, cannot renew");
             return false;
         }
         // get index of item to renew
@@ -130,7 +135,6 @@ public class checkoutTracker {
                 BufferedWriter fileToWrite = new BufferedWriter(new FileWriter("checkoutLog.csv", false));
                 fileToWrite.write(writeToFileString);
                 fileToWrite.close();
-                System.out.println(writeToFileString);
             } catch (Exception e) {
                 System.out.println(e);
 
@@ -173,31 +177,12 @@ public class checkoutTracker {
                 {
                     //Decrease amount of copies
                     libCatalog.copiesDecrement(itemID);
-                    //Format Date output to MM/dd/yyyy to write to file
-                    DateFormat writeFormat = new SimpleDateFormat("MM/dd/yyyy");
-                    DateFormat outPutFormat = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
 
                     //Remove item with the date from the Hashmap
                     checkoutLog.get(userID).remove(itemToRemoveIndex);
 
                     //Rewrite the data in checkoutLog.csv
-                    String writeToFileString = "";
-                     for(int id: checkoutLog.keySet())
-                    {
-                        writeToFileString += ""+id;
-                        for(CheckOutAble itemToWrite: checkoutLog.get(id))
-                        {
-                            writeToFileString += "," + writeFormat.format(outPutFormat.parse(itemToWrite.getDateCheckout().toString())) + ",";//date
-                            writeToFileString += itemToWrite.getID();//item id
-                        }
-                        writeToFileString +="\n";
-                    }
-
-                    //Write to file
-                    BufferedWriter fileToWrite = new BufferedWriter(new FileWriter("checkoutLog.csv", false));
-                    fileToWrite.write(writeToFileString);
-                    fileToWrite.close();
-                    System.out.println(writeToFileString);
+                    writeData();
                 }
                 catch(Exception e)
                 {
@@ -213,7 +198,6 @@ public class checkoutTracker {
      {
          ArrayList<CheckOutAble> overdueList = new ArrayList<>();
          //Get today date to compare
-         String currentDateString = "";
          try
          {
              Date currentDate = new Date();
@@ -256,6 +240,7 @@ public class checkoutTracker {
      }
 
 
+     //Helper function to create item from itemID
     private CheckOutAble item(int itemID)
     {
         //Store in 2 arraylist: userIDList and passwordList
@@ -308,8 +293,39 @@ public class checkoutTracker {
         return checkoutLog.get(userID);
     }
 
-    
-    
+    //Helper function to write to file
+    private void writeData()
+    {
+        try
+        {
+            //Format Date output to MM/dd/yyyy to write to file
+            DateFormat writeFormat = new SimpleDateFormat("MM/dd/yyyy");
+            DateFormat outPutFormat = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+
+            String writeToFileString = "";
+            for(int id: checkoutLog.keySet())
+            {
+                writeToFileString += ""+id;
+                for(CheckOutAble itemToWrite: checkoutLog.get(id))
+                {
+                    writeToFileString += "," + writeFormat.format(outPutFormat.parse(itemToWrite.getDateCheckout().toString())) + ",";//date
+                    writeToFileString += itemToWrite.getID();//item id
+                }
+                writeToFileString +="\n";
+            }
+
+            //Write to file
+            BufferedWriter fileToWrite = new BufferedWriter(new FileWriter("checkoutLog.csv", false));
+            fileToWrite.write(writeToFileString);
+            fileToWrite.close();
+            System.out.println(writeToFileString);
+
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
    
 
   
