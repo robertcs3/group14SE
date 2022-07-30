@@ -1,5 +1,8 @@
+import java.awt.print.Book;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class catalog {
@@ -188,6 +191,7 @@ public class catalog {
                 checkOutAbleList.get(index).decreaseCopy(1);
             }
         }
+        fileUpdate();
     }
 
     public void copiesIncrement(int itemID){
@@ -196,6 +200,7 @@ public class catalog {
                 checkOutAbleList.get(index).increaseCopy(1);
             }
         }
+        fileUpdate();
     }
 
     public boolean isRequest(int itemID){
@@ -213,6 +218,78 @@ public class catalog {
     }
 
     public void fileUpdate(){
+        try{
+            BufferedWriter newBookList = new BufferedWriter(new FileWriter("book.csv", false));
+            newBookList.close();
 
+            BufferedWriter newVideoList = new BufferedWriter(new FileWriter("video.csv", false));
+            newVideoList.close();
+
+            BufferedWriter newAudioList = new BufferedWriter(new FileWriter("audio.csv", false));
+            newAudioList.close();
+
+            // Checking for all instances of book in checkOutAbleList
+            for(int index = 0; index < checkOutAbleList.size(); ++index){
+                if(checkOutAbleList.get(index) instanceof book){
+                    // book was found need to update book.csv
+
+                    CheckOutAble bookEntry = checkOutAbleList.get(index);
+
+                    newBookList = new BufferedWriter(new FileWriter("book.csv", true));
+                    newBookList.write("\n" + Integer.toString(bookEntry.getID())
+                            + "," + bookEntry.getName()
+                            + "," + Integer.toString(bookEntry.getValue())
+                            + "," + Integer.toString(bookEntry.getCopies())
+                    );
+
+                    if(((book) bookEntry).isBestSeller()){
+                        newBookList.write("," + "TRUE");
+                    }
+                    else{
+                        newBookList.write("," + "FALSE");
+                    }
+                    newBookList.close();
+                }
+            }
+
+            // Checking for all instances of video in checkOutAbleList
+            for(int index = 0; index < checkOutAbleList.size(); ++index){
+                if(checkOutAbleList.get(index) instanceof video){
+                    // video was found need to update video.csv
+
+                    CheckOutAble videoEntry = checkOutAbleList.get(index);
+
+                    newVideoList = new BufferedWriter(new FileWriter("video.csv", true));
+                    newVideoList.write("\n" + Integer.toString(videoEntry.getID())
+                            + "," + videoEntry.getName()
+                            + "," + Integer.toString(videoEntry.getValue())
+                            + "," + Integer.toString(videoEntry.getCopies())
+                    );
+
+                    newVideoList.close();
+                }
+            }
+
+            // Checking for all instances of audio in checkOutAbleList
+            for(int index = 0; index < checkOutAbleList.size(); ++index){
+                if(checkOutAbleList.get(index) instanceof audio){
+                    // audio was found need to update audio.csv
+
+                    CheckOutAble audioEntry = checkOutAbleList.get(index);
+
+                    newAudioList = new BufferedWriter(new FileWriter("audio.csv", true));
+                    newAudioList.write("\n" + Integer.toString(audioEntry.getID())
+                            + "," + audioEntry.getName()
+                            + "," + Integer.toString(audioEntry.getValue())
+                            + "," + Integer.toString(audioEntry.getCopies())
+                    );
+
+                    newAudioList.close();
+                }
+            }
+        }
+        catch(Exception e){
+            System.out.println();
+        }
     }
 }
