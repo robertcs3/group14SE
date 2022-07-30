@@ -324,7 +324,7 @@ public class Library
         userPanel.setLayout(userLayout);//Set layout for panel
 
         //Functions
-        JLabel welcomeLabel = new JLabel("Welcome Back" + currentUserID, SwingConstants.CENTER);
+        JLabel welcomeLabel = new JLabel("Welcome Back", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("", Font.BOLD, 25));
         JButton requestRenew = new JButton("Request Renew");
         JButton checkoutItem = new JButton("Checkout Item");
@@ -357,6 +357,82 @@ public class Library
         //GUI END--------------------------------------------------------------------------------------
 
         //Set function for buttons
+
+        //Request Renew
+        requestRenew.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                //GUI START--------------------------------------------------------------------------------------------
+
+                //List of checkout items
+                ArrayList<CheckOutAble> itemList = system.getCheckoutItems(currentUserID);
+                HashMap<Integer, CheckOutAble> itemLookupMap = new HashMap<Integer,CheckOutAble>();
+
+                for(CheckOutAble item: itemList)
+                {
+                    itemLookupMap.put(item.getID(), item);
+                }
+
+                JFrame renewFrame = new JFrame("Return Item Frame");
+                JPanel renewPanel = new JPanel();
+                JPanel buttonPanel = new JPanel();
+                buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+
+                DefaultListModel listModel = new DefaultListModel();
+                JList list = new JList(listModel);
+                JScrollPane listScrollPane = new JScrollPane(list);
+
+                //Add checkout items into the list
+                for(CheckOutAble item: itemList)
+                {
+                    String itemString = item.getID() + " " +item.getName();
+                    listModel.addElement(itemString);
+                }
+                //Button
+                JButton renewItemButton = new JButton("Renew Item");
+
+                buttonPanel.add(renewItemButton);
+                buttonPanel.add(Box.createHorizontalStrut(5));
+                buttonPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+
+                //Add list into scroll pane
+                list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+                list.setSelectedIndex(0);
+                list.setVisibleRowCount(5);
+
+                //Add scroll pane to checkoutItemPanel
+                renewPanel.add(listScrollPane, BorderLayout.CENTER);
+                renewPanel.add(buttonPanel, BorderLayout.PAGE_END);
+
+                renewFrame.add(renewPanel);
+                renewFrame.pack();
+                renewFrame.setVisible(true);
+                renewFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+                //GUI END----------------------------------------------------------------------------------
+
+                //Button function
+                renewItemButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String itemID = list.getSelectedValue().toString();
+                        itemID = itemID.substring(0,5);
+                        if(system.renewItem(Integer.parseInt(itemID)))
+                        {
+                            JOptionPane.showMessageDialog(renewFrame, "Item Successfully Renew");
+                        }
+                        else
+                        {
+                            JOptionPane.showMessageDialog(renewFrame, "There an outstanding fine in your account or outstanding request for the item");
+                        }
+                    }
+                });
+
+            }
+        });
+
+
         //Return Item -_-_-_-_-_-_-_-_-_-_-_-_-_--_-_-_-_-_-_-_-_-_-_-_-_-_--_-_-_-_-_-_-_-_-_-_-_-_-_-
         returnItem.addActionListener(new ActionListener()
         {
