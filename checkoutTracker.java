@@ -23,12 +23,11 @@ public class checkoutTracker {
             //read checkoutLog.csv
             br = new BufferedReader(new FileReader("checkoutLog.csv"));
             String line = "";
-            int counter = 0;
             while((line = br.readLine()) != null)
             {
                 String[] logLine = line.split(",");
-                //Date will always be even index number
-                //Item ID will always be odd index number
+                //Date will always be odd index number
+                //Item ID will always be even index number
                 int id = Integer.parseInt(logLine[0]);
                 ArrayList<CheckOutAble> items = new ArrayList<CheckOutAble>();
                 for(int i = 1; i < logLine.length; i++)
