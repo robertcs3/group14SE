@@ -62,7 +62,7 @@ public class audio implements CheckOutAble{
     }
 
     @Override
-    public void addCopies(int amount) {
+    public void increaseCopy(int amount) {
         copies += amount;
     }
 

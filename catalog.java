@@ -181,11 +181,27 @@ public class catalog {
         return null;
     }
 
-    public boolean copiesDecrement(int itemID){
+
+    public void copiesDecrement(int itemID){
         for(int index = 0; index < checkOutAbleList.size(); ++index){
             if(checkOutAbleList.get(index).getID() == itemID){
-                if(checkOutAbleList.get(index).getCopies() >= 1){
-                    checkOutAbleList.get(index).decreaseCopy(1);
+                checkOutAbleList.get(index).decreaseCopy(1);
+            }
+        }
+    }
+
+    public void copiesIncrement(int itemID){
+        for(int index = 0; index < checkOutAbleList.size(); ++index){
+            if(checkOutAbleList.get(index).getID() == itemID){
+                checkOutAbleList.get(index).increaseCopy(1);
+            }
+        }
+    }
+
+    public boolean isRequest(int itemID){
+        for(int index = 0; index < checkOutAbleList.size(); ++index){
+            if(checkOutAbleList.get(index).getID() == itemID){
+                if(checkOutAbleList.get(index).getCopies() == 0){
                     return true;
                 }
                 else{
@@ -194,5 +210,9 @@ public class catalog {
             }
         }
         return false;
+    }
+
+    public void fileUpdate(){
+
     }
 }
