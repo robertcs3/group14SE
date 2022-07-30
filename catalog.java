@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class catalog {
 
@@ -15,14 +16,14 @@ public class catalog {
     private ArrayList<UnCheckoutAble> unCheckoutAbleList = new ArrayList<UnCheckoutAble>();
 
 
-    public catalog(){
+    public catalog() {
 
         // reading in data from book.csv
-        try{
+        try {
             br = new BufferedReader(new FileReader("book.csv"));
             String line = "";
 
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 String[] logLine = line.split(",");
 
                 // Reading in values to form item objects (books)
@@ -39,17 +40,16 @@ public class catalog {
                 // new line should kick off next book entry until EOF
             }
             br.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         // reading in data from audio.csv
-        try{
+        try {
             br = new BufferedReader(new FileReader("audio.csv"));
             String line = "";
 
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 String[] logLine = line.split(",");
 
                 // Reading in values to for item objects (audio)
@@ -65,17 +65,16 @@ public class catalog {
                 // new line should kick off next audio entry until EOF
             }
             br.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         // reading in data from video.csv
-        try{
+        try {
             br = new BufferedReader(new FileReader("video.csv"));
             String line = "";
 
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 String[] logLine = line.split(",");
 
                 // Reading in values to for item objects (video)
@@ -91,17 +90,16 @@ public class catalog {
                 // new line should kick off next video entry until EOF
             }
             br.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         // reading in data from magazine.csv
-        try{
+        try {
             br = new BufferedReader(new FileReader("magazine.csv"));
             String line = "";
 
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 String[] logLine = line.split(",");
 
                 // Reading in values to for item objects (magazine)
@@ -110,23 +108,22 @@ public class catalog {
                 int value = Integer.parseInt(logLine[2]);
 
                 // now create a new magazine item and add it (can not be checked out)
-                magazine newMagazine = new magazine(id,name,value);
+                magazine newMagazine = new magazine(id, name, value);
                 unCheckoutAbleList.add(newMagazine);
 
                 // new line should kick off next magazine entry until EOF
             }
             br.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         // reading in data from reference.csv
-        try{
+        try {
             br = new BufferedReader(new FileReader("reference.csv"));
             String line = "";
 
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 String[] logLine = line.split(",");
 
                 // Reading in values to for item objects (reference)
@@ -141,8 +138,7 @@ public class catalog {
                 // new line should kick off next reference entry until EOF
             }
             br.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -158,8 +154,8 @@ public class catalog {
         }
 
         //checking list of un-check-out-able items second (lists may not be same size)
-        for (int index = 0; index < unCheckoutAbleList.size(); ++index){
-            if (unCheckoutAbleList.get(index).getId() == itemID){
+        for (int index = 0; index < unCheckoutAbleList.size(); ++index) {
+            if (unCheckoutAbleList.get(index).getId() == itemID) {
                 return true;
             }
         }
@@ -170,46 +166,43 @@ public class catalog {
 
 
     // Displays catalog helper function
-    public ArrayList<CheckOutAble> showCatalog(){
+    public ArrayList<CheckOutAble> showCatalog() {
         // placeholder (implementation needed)
         return checkOutAbleList;
     }
 
-    public CheckOutAble getItem(int itemID)
-    {
-        if(itemChecker(itemID))
-        {
+    public CheckOutAble getItem(int itemID) {
+        if (itemChecker(itemID)) {
             return checkOutAbleList.get(checkOutAbleList.indexOf(itemID));
         }
         return null;
     }
 
 
-    public void copiesDecrement(int itemID){
-        for(int index = 0; index < checkOutAbleList.size(); ++index){
-            if(checkOutAbleList.get(index).getID() == itemID){
+    public void copiesDecrement(int itemID) {
+        for (int index = 0; index < checkOutAbleList.size(); ++index) {
+            if (checkOutAbleList.get(index).getID() == itemID) {
                 checkOutAbleList.get(index).decreaseCopy(1);
             }
         }
         fileUpdate();
     }
 
-    public void copiesIncrement(int itemID){
-        for(int index = 0; index < checkOutAbleList.size(); ++index){
-            if(checkOutAbleList.get(index).getID() == itemID){
+    public void copiesIncrement(int itemID) {
+        for (int index = 0; index < checkOutAbleList.size(); ++index) {
+            if (checkOutAbleList.get(index).getID() == itemID) {
                 checkOutAbleList.get(index).increaseCopy(1);
             }
         }
         fileUpdate();
     }
 
-    public boolean isRequest(int itemID){
-        for(int index = 0; index < checkOutAbleList.size(); ++index){
-            if(checkOutAbleList.get(index).getID() == itemID){
-                if(checkOutAbleList.get(index).getCopies() == 0){
+    public boolean isRequest(int itemID) {
+        for (int index = 0; index < checkOutAbleList.size(); ++index) {
+            if (checkOutAbleList.get(index).getID() == itemID) {
+                if (checkOutAbleList.get(index).getCopies() == 0) {
                     return true;
-                }
-                else{
+                } else {
                     return false;
                 }
             }
@@ -217,53 +210,53 @@ public class catalog {
         return false;
     }
 
-    public void fileUpdate(){
-        try{
-            BufferedWriter newBookList = new BufferedWriter(new FileWriter("book.csv", false));
+    public void fileUpdate() {
+        try {
+            BufferedWriter newBookList = new BufferedWriter(new FileWriter("book1.csv", false));
             newBookList.close();
 
-            BufferedWriter newVideoList = new BufferedWriter(new FileWriter("video.csv", false));
+            BufferedWriter newVideoList = new BufferedWriter(new FileWriter("video1.csv", false));
             newVideoList.close();
 
-            BufferedWriter newAudioList = new BufferedWriter(new FileWriter("audio.csv", false));
+            BufferedWriter newAudioList = new BufferedWriter(new FileWriter("audio1.csv", false));
             newAudioList.close();
 
             // Checking for all instances of book in checkOutAbleList
-            for(int index = 0; index < checkOutAbleList.size(); ++index){
-                if(checkOutAbleList.get(index) instanceof book){
+            for (int index = 0; index < checkOutAbleList.size(); ++index) {
+                if (checkOutAbleList.get(index) instanceof book) {
                     // book was found need to update book.csv
 
                     CheckOutAble bookEntry = checkOutAbleList.get(index);
 
-                    newBookList = new BufferedWriter(new FileWriter("book.csv", true));
-                    newBookList.write("\n" + Integer.toString(bookEntry.getID())
+                    newBookList = new BufferedWriter(new FileWriter("book1.csv", true));
+                    newBookList.write(Integer.toString(bookEntry.getID())
                             + "," + bookEntry.getName()
                             + "," + Integer.toString(bookEntry.getValue())
                             + "," + Integer.toString(bookEntry.getCopies())
                     );
 
-                    if(((book) bookEntry).isBestSeller()){
-                        newBookList.write("," + "TRUE");
-                    }
-                    else{
-                        newBookList.write("," + "FALSE");
+                    if (((book) bookEntry).isBestSeller()) {
+                        newBookList.write("," + "TRUE" + "\n");
+                    } else {
+                        newBookList.write("," + "FALSE" + "\n");
                     }
                     newBookList.close();
                 }
             }
 
             // Checking for all instances of video in checkOutAbleList
-            for(int index = 0; index < checkOutAbleList.size(); ++index){
-                if(checkOutAbleList.get(index) instanceof video){
+            for (int index = 0; index < checkOutAbleList.size(); ++index) {
+                if (checkOutAbleList.get(index) instanceof video) {
                     // video was found need to update video.csv
 
                     CheckOutAble videoEntry = checkOutAbleList.get(index);
 
-                    newVideoList = new BufferedWriter(new FileWriter("video.csv", true));
-                    newVideoList.write("\n" + Integer.toString(videoEntry.getID())
+                    newVideoList = new BufferedWriter(new FileWriter("video1.csv", true));
+                    newVideoList.write(Integer.toString(videoEntry.getID())
                             + "," + videoEntry.getName()
                             + "," + Integer.toString(videoEntry.getValue())
                             + "," + Integer.toString(videoEntry.getCopies())
+                            + "\n"
                     );
 
                     newVideoList.close();
@@ -271,25 +264,42 @@ public class catalog {
             }
 
             // Checking for all instances of audio in checkOutAbleList
-            for(int index = 0; index < checkOutAbleList.size(); ++index){
-                if(checkOutAbleList.get(index) instanceof audio){
+            for (int index = 0; index < checkOutAbleList.size(); ++index) {
+                if (checkOutAbleList.get(index) instanceof audio) {
                     // audio was found need to update audio.csv
 
                     CheckOutAble audioEntry = checkOutAbleList.get(index);
 
-                    newAudioList = new BufferedWriter(new FileWriter("audio.csv", true));
-                    newAudioList.write("\n" + Integer.toString(audioEntry.getID())
+                    newAudioList = new BufferedWriter(new FileWriter("audio1.csv", true));
+                    newAudioList.write(Integer.toString(audioEntry.getID())
                             + "," + audioEntry.getName()
                             + "," + Integer.toString(audioEntry.getValue())
                             + "," + Integer.toString(audioEntry.getCopies())
+                            + "\n"
                     );
 
                     newAudioList.close();
                 }
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println();
         }
     }
+
 }
+//    public static void main(String[] args){
+//        catalog testCatalog = new catalog();
+//
+//        // book test cases
+//        testCatalog.copiesDecrement(22731);
+//        testCatalog.copiesIncrement(40790);
+//
+//        // audio test cases
+//        testCatalog.copiesDecrement(97465);
+//        testCatalog.copiesIncrement(38375);
+//
+//        // video test cases
+//        testCatalog.copiesDecrement(87448);
+//        testCatalog.copiesIncrement(27205);
+//    }
+//}
