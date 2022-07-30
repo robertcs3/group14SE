@@ -1,9 +1,15 @@
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class Library
 {
@@ -318,8 +324,8 @@ public class Library
         userPanel.setLayout(userLayout);//Set layout for panel
 
         //Functions
-        JLabel welcomeLabel = new JLabel("Welcome Back User " + currentUserID, SwingConstants.CENTER);
-        welcomeLabel.setFont(new Font("", Font.BOLD, 30));
+        JLabel welcomeLabel = new JLabel("Welcome Back" + currentUserID, SwingConstants.CENTER);
+        welcomeLabel.setFont(new Font("", Font.BOLD, 25));
         JButton requestRenew = new JButton("Request Renew");
         JButton checkoutItem = new JButton("Checkout Item");
         JButton returnItem = new JButton("Return Item");
@@ -351,17 +357,257 @@ public class Library
         //GUI END--------------------------------------------------------------------------------------
 
         //Set function for buttons
-        returnItem.addActionListener(new ActionListener() {
+        //Return Item -_-_-_-_-_-_-_-_-_-_-_-_-_--_-_-_-_-_-_-_-_-_-_-_-_-_--_-_-_-_-_-_-_-_-_-_-_-_-_-
+        returnItem.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
+                //List of checkout items
                 ArrayList<CheckOutAble> itemList = system.getCheckoutItems(currentUserID);
-                JList listOfItems = new JList();
-                DefaultListModel<CheckOutAble> listModel = new DefaultListModel<>();
-                listOfItems.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-                listOfItems.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-                listOfItems.setVisibleRowCount(-1);
+                HashMap<Integer, CheckOutAble> itemLookupMap = new HashMap<Integer,CheckOutAble>();
+
+                for(CheckOutAble item: itemList)
+                {
+                    itemLookupMap.put(item.getID(), item);
+                }
+
+                JFrame returnItemFrame = new JFrame("Return Item Frame");
+                JPanel returnItemPanel = new JPanel();
+                JPanel buttonPanel = new JPanel();
+                buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+
+                DefaultListModel listModel = new DefaultListModel();
+                JList list = new JList(listModel);
+                JScrollPane listScrollPane = new JScrollPane(list);
+
+                //Add checkout items into the list
+                for(CheckOutAble item: itemList)
+                {
+                    String itemString = item.getID() + " " +item.getName();
+                    listModel.addElement(itemString);
+                }
+                //Buttons
+                JButton getInfoButton = new JButton("Get Info");
+                JButton returnItemButton = new JButton("Return Item");
+
+                buttonPanel.add(getInfoButton);
+                buttonPanel.add(returnItemButton);
+                buttonPanel.add(Box.createHorizontalStrut(5));
+                buttonPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+
+                //Add list into scroll pane
+                list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+                list.setSelectedIndex(0);
+                list.setVisibleRowCount(5);
+
+                //Add scroll pane to checkoutItemPanel
+                returnItemPanel.add(listScrollPane, BorderLayout.CENTER);
+                returnItemPanel.add(buttonPanel, BorderLayout.PAGE_END);
+
+                returnItemFrame.add(returnItemPanel);
+                returnItemFrame.pack();
+                returnItemFrame.setVisible(true);
+                returnItemFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+                getInfoButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        //Get item information
+                        String itemID = list.getSelectedValue().toString();
+                        itemID = itemID.substring(0,5);
+                        CheckOutAble item = itemLookupMap.get(Integer.parseInt(itemID));
+                        boolean bestSeller = false;
+                        if(itemID.charAt(4) != '0')
+                        {
+                            bestSeller = true;
+                        }
+                        //Get due date
+                        Date currentDate = new Date();
+                        Date dueDate = new Date(item.getDateCheckout().getTime() + TimeUnit.DAYS.toMillis(item.getDurationLimit()));//Due date
+
+                        //GUI--------------------------------------------------------------------
+
+                        //Components
+                        JFrame tempFrame = new JFrame(item.getName() +" Information");
+                        JPanel tempPanel = new JPanel();
+                        tempPanel.setLayout(new GridLayout(5,1));
+                        Font font = new Font("Arial", Font.BOLD, 25);
+
+                        JLabel idLabel, nameLabel, bestSellerLabel, checkoutLabel, dueDateLabel;
+                        idLabel = new JLabel("ID:        " + item.getID());
+                        idLabel.setFont(font);
+                        nameLabel = new JLabel("Name:        " + item.getName());
+                        nameLabel.setFont(font);
+                        bestSellerLabel = new JLabel("Best Seller:        " + bestSeller);
+                        bestSellerLabel.setFont(font);
+                        checkoutLabel = new JLabel("Date Checkout:        " + item.getDateCheckout());
+                        checkoutLabel.setFont(font);
+                        dueDateLabel = new JLabel("Due Date:        " + dueDate);
+                        dueDateLabel.setFont(font);
+
+                        //Add to frame and panel
+                        tempPanel.add(idLabel);
+                        tempPanel.add(nameLabel);
+                        tempPanel.add(bestSellerLabel);
+                        tempPanel.add(checkoutLabel);
+                        tempPanel.add(dueDateLabel);
+
+                        tempFrame.add(tempPanel);
+                        tempFrame.setSize(600,400);
+
+                        tempFrame.setVisible(true);
+                        tempFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+                        //GUI--------------------------------------------------------------------
+                    }
+                });
+
+                //Return Item -_-_-_-_-_-_-_-_-_-_-_-_-_--_-_-_-_-_-_-_-_-_-_-_-_-_--_-_-_-_-_-_-_-_-_-_-_-_-_-
+
+                returnItemButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //Get item ID
+                        String itemID = list.getSelectedValue().toString();
+                        itemID = itemID.substring(0,5);
+                        listModel.remove(list.getSelectedIndex());
+                        list.repaint();
+                        list.revalidate();
+
+                        //Return item
+                        system.returnItem(Integer.parseInt(itemID), currentUserID);
+                    }
+                });
             }
         });
+
+        //Checkout Item================================================================================
+
+        checkoutItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                //GUI START--------------------------------------------------------------------------------------
+
+                ArrayList <CheckOutAble> itemList = system.getItemList();
+
+                JFrame checkoutFrame = new JFrame("Checkout Item");
+                JPanel checkoutPanel = new JPanel();
+                JPanel buttonPanel = new JPanel();
+                buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+
+                DefaultListModel listModel = new DefaultListModel();
+                JList list = new JList(listModel);
+                list.setPreferredSize(new Dimension(300,300));
+                JScrollPane listScrollPane = new JScrollPane(list);
+
+                //Add checkout items into the list
+                for(CheckOutAble item: itemList)
+                {
+                    String itemString = item.getID() + " " +item.getName();
+                    listModel.addElement(itemString);
+                }
+                //Buttons
+                JButton getInfoButton = new JButton("Get Info");
+                JButton returnItemButton = new JButton("Checkout Item");
+
+                buttonPanel.add(getInfoButton);
+                buttonPanel.add(returnItemButton);
+                buttonPanel.add(Box.createHorizontalStrut(5));
+                buttonPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+
+                //Add list into scroll pane
+                list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+                list.setSelectedIndex(0);
+                list.setVisibleRowCount(5);
+
+                //Add scroll pane to checkoutItemPanel
+                checkoutPanel.add(listScrollPane, BorderLayout.CENTER);
+                checkoutPanel.add(buttonPanel, BorderLayout.PAGE_END);
+
+                checkoutFrame.add(checkoutPanel);
+                checkoutFrame.pack();
+                checkoutFrame.setVisible(true);
+                checkoutFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+                //GUI END--------------------------------------------------------------------------------------
+
+                checkoutItem.addActionListener(new ActionListener()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        String itemID = list.getSelectedValue().toString();
+                        itemID = itemID.substring(0,5);
+                        system.checkOutItem(currentUserID, Integer.parseInt(itemID));
+                    }
+                });
+
+                getInfoButton.addActionListener(new ActionListener()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        //Get item information
+                        String itemID = list.getSelectedValue().toString();
+                        itemID = itemID.substring(0,5);
+                        CheckOutAble item = null;
+                        for(CheckOutAble checkoutItem: system.getItemList())
+                        {
+                            if(checkoutItem.getID() == Integer.parseInt(itemID))
+                            {
+                                item = checkoutItem;
+                                break;
+                            }
+                        }
+
+                        boolean bestSeller = false;
+                        if(itemID.charAt(4) != '0')
+                        {
+                            bestSeller = true;
+                        }
+
+                        //GUI--------------------------------------------------------------------
+
+                        //Components
+                        JFrame tempFrame = new JFrame(item.getName() +" Information");
+                        JPanel tempPanel = new JPanel();
+                        tempPanel.setLayout(new GridLayout(5,1));
+                        Font font = new Font("Arial", Font.BOLD, 25);
+
+                        JLabel idLabel, nameLabel, bestSellerLabel, valueLabel, copiesLabel;
+                        idLabel = new JLabel("ID:        " + item.getID());
+                        idLabel.setFont(font);
+                        nameLabel = new JLabel("Name:        " + item.getName());
+                        nameLabel.setFont(font);
+                        bestSellerLabel = new JLabel("Best Seller:        " + bestSeller);
+                        bestSellerLabel.setFont(font);
+                        copiesLabel = new JLabel("Copies:        " + item.getCopies());
+                        copiesLabel.setFont(font);
+                        valueLabel = new JLabel("Value:        $" + item.getValue());
+                        valueLabel.setFont(font);
+
+                        //Add to frame and panel
+                        tempPanel.add(idLabel);
+                        tempPanel.add(nameLabel);
+                        tempPanel.add(bestSellerLabel);
+                        tempPanel.add(valueLabel);
+                        tempPanel.add(copiesLabel);
+
+                        tempFrame.add(tempPanel);
+                        tempFrame.setSize(600,400);
+
+                        tempFrame.setVisible(true);
+                        tempFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                    }
+                });
+            }
+        });
+
+        //Checkout Item================================================================================
+
 
         getInfo.addActionListener(new ActionListener() {
             @Override

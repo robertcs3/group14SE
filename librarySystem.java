@@ -28,7 +28,7 @@ class librarySystem  {
                 String phoneNumber = user[4];
                 String address = user[5] +"," + user[6] +","+user[7] +","+ user[8];
                 Boolean isChild = Boolean.parseBoolean(user[9]);
-                signIn(id, firstName, lastName, password, address, phoneNumber, isChild);
+                signIn(id, firstName, lastName, address, phoneNumber, isChild);
             }
             fileReader.close();
         }
@@ -64,13 +64,13 @@ class librarySystem  {
     }
 
     //For existing user DONE
-    public void signIn(int id, String firstName, String lastName, String password, String address, String phoneNumber, Boolean isChild)
+    public void signIn(int id, String firstName, String lastName, String address, String phoneNumber, Boolean isChild)
     {
         libraryCard newUser = new libraryCard(id, firstName, lastName, address, phoneNumber, isChild);
         memberList.add(newUser);
     }
 
-    public void checkOutItem(int itemID, int userID)//MODIFY AN
+    public void checkOutItem(int itemID, int userID)
     {
         checkoutTracker.checkOutItem(userID, libraryCatalog.getItem(itemID));
         libraryCatalog.copiesDecrement(itemID);
