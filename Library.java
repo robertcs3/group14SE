@@ -357,6 +357,7 @@ public class Library
         //GUI END--------------------------------------------------------------------------------------
 
         //Set function for buttons
+        //Return Item -_-_-_-_-_-_-_-_-_-_-_-_-_--_-_-_-_-_-_-_-_-_-_-_-_-_--_-_-_-_-_-_-_-_-_-_-_-_-_-
         returnItem.addActionListener(new ActionListener()
         {
             @Override
@@ -371,8 +372,8 @@ public class Library
                     itemLookupMap.put(item.getID(), item);
                 }
 
-                JFrame checkoutItemFrame = new JFrame("Checkout Item Frame");
-                JPanel checkoutItemPanel = new JPanel();
+                JFrame returnItemFrame = new JFrame("Return Item Frame");
+                JPanel returnItemPanel = new JPanel();
                 JPanel buttonPanel = new JPanel();
                 buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
 
@@ -401,17 +402,18 @@ public class Library
                 list.setVisibleRowCount(5);
 
                 //Add scroll pane to checkoutItemPanel
-                checkoutItemPanel.add(listScrollPane, BorderLayout.CENTER);
-                checkoutItemPanel.add(buttonPanel, BorderLayout.PAGE_END);
+                returnItemPanel.add(listScrollPane, BorderLayout.CENTER);
+                returnItemPanel.add(buttonPanel, BorderLayout.PAGE_END);
 
-                checkoutItemFrame.add(checkoutItemPanel);
-                checkoutItemFrame.pack();
-                checkoutItemFrame.setVisible(true);
-                checkoutItemFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                returnItemFrame.add(returnItemPanel);
+                returnItemFrame.pack();
+                returnItemFrame.setVisible(true);
+                returnItemFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
                 getInfoButton.addActionListener(new ActionListener() {
                     @Override
-                    public void actionPerformed(ActionEvent e) {
+                    public void actionPerformed(ActionEvent e)
+                    {
                         //Get item information
                         String itemID = list.getSelectedValue().toString();
                         itemID = itemID.substring(0,5);
@@ -462,13 +464,14 @@ public class Library
                     }
                 });
 
+                //Return Item -_-_-_-_-_-_-_-_-_-_-_-_-_--_-_-_-_-_-_-_-_-_-_-_-_-_--_-_-_-_-_-_-_-_-_-_-_-_-_-
+
                 returnItemButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         //Get item ID
                         String itemID = list.getSelectedValue().toString();
                         itemID = itemID.substring(0,5);
-                        //list.remove(list.getSelectedIndex());
                         listModel.remove(list.getSelectedIndex());
                         list.repaint();
                         list.revalidate();
@@ -479,6 +482,132 @@ public class Library
                 });
             }
         });
+
+        //Checkout Item================================================================================
+
+        checkoutItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                //GUI START--------------------------------------------------------------------------------------
+
+                ArrayList <CheckOutAble> itemList = system.getItemList();
+
+                JFrame checkoutFrame = new JFrame("Checkout Item");
+                JPanel checkoutPanel = new JPanel();
+                JPanel buttonPanel = new JPanel();
+                buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+
+                DefaultListModel listModel = new DefaultListModel();
+                JList list = new JList(listModel);
+                list.setPreferredSize(new Dimension(300,300));
+                JScrollPane listScrollPane = new JScrollPane(list);
+
+                //Add checkout items into the list
+                for(CheckOutAble item: itemList)
+                {
+                    String itemString = item.getID() + " " +item.getName();
+                    listModel.addElement(itemString);
+                }
+                //Buttons
+                JButton getInfoButton = new JButton("Get Info");
+                JButton returnItemButton = new JButton("Checkout Item");
+
+                buttonPanel.add(getInfoButton);
+                buttonPanel.add(returnItemButton);
+                buttonPanel.add(Box.createHorizontalStrut(5));
+                buttonPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+
+                //Add list into scroll pane
+                list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+                list.setSelectedIndex(0);
+                list.setVisibleRowCount(5);
+
+                //Add scroll pane to checkoutItemPanel
+                checkoutPanel.add(listScrollPane, BorderLayout.CENTER);
+                checkoutPanel.add(buttonPanel, BorderLayout.PAGE_END);
+
+                checkoutFrame.add(checkoutPanel);
+                checkoutFrame.pack();
+                checkoutFrame.setVisible(true);
+                checkoutFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+                //GUI END--------------------------------------------------------------------------------------
+
+                checkoutItem.addActionListener(new ActionListener()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        String itemID = list.getSelectedValue().toString();
+                        itemID = itemID.substring(0,5);
+                        system.checkOutItem(currentUserID, Integer.parseInt(itemID));
+                    }
+                });
+
+                getInfoButton.addActionListener(new ActionListener()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        //Get item information
+                        String itemID = list.getSelectedValue().toString();
+                        itemID = itemID.substring(0,5);
+                        CheckOutAble item = null;
+                        for(CheckOutAble checkoutItem: system.getItemList())
+                        {
+                            if(checkoutItem.getID() == Integer.parseInt(itemID))
+                            {
+                                item = checkoutItem;
+                                break;
+                            }
+                        }
+
+                        boolean bestSeller = false;
+                        if(itemID.charAt(4) != '0')
+                        {
+                            bestSeller = true;
+                        }
+
+                        //GUI--------------------------------------------------------------------
+
+                        //Components
+                        JFrame tempFrame = new JFrame(item.getName() +" Information");
+                        JPanel tempPanel = new JPanel();
+                        tempPanel.setLayout(new GridLayout(5,1));
+                        Font font = new Font("Arial", Font.BOLD, 25);
+
+                        JLabel idLabel, nameLabel, bestSellerLabel, valueLabel, copiesLabel;
+                        idLabel = new JLabel("ID:        " + item.getID());
+                        idLabel.setFont(font);
+                        nameLabel = new JLabel("Name:        " + item.getName());
+                        nameLabel.setFont(font);
+                        bestSellerLabel = new JLabel("Best Seller:        " + bestSeller);
+                        bestSellerLabel.setFont(font);
+                        copiesLabel = new JLabel("Copies:        " + item.getCopies());
+                        copiesLabel.setFont(font);
+                        valueLabel = new JLabel("Value:        $" + item.getValue());
+                        valueLabel.setFont(font);
+
+                        //Add to frame and panel
+                        tempPanel.add(idLabel);
+                        tempPanel.add(nameLabel);
+                        tempPanel.add(bestSellerLabel);
+                        tempPanel.add(valueLabel);
+                        tempPanel.add(copiesLabel);
+
+                        tempFrame.add(tempPanel);
+                        tempFrame.setSize(600,400);
+
+                        tempFrame.setVisible(true);
+                        tempFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                    }
+                });
+            }
+        });
+
+        //Checkout Item================================================================================
+
 
         getInfo.addActionListener(new ActionListener() {
             @Override
