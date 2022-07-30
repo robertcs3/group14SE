@@ -324,8 +324,8 @@ public class Library
         userPanel.setLayout(userLayout);//Set layout for panel
 
         //Functions
-        JLabel welcomeLabel = new JLabel("Welcome Back User " + currentUserID, SwingConstants.CENTER);
-        welcomeLabel.setFont(new Font("", Font.BOLD, 30));
+        JLabel welcomeLabel = new JLabel("Welcome Back" + currentUserID, SwingConstants.CENTER);
+        welcomeLabel.setFont(new Font("", Font.BOLD, 25));
         JButton requestRenew = new JButton("Request Renew");
         JButton checkoutItem = new JButton("Checkout Item");
         JButton returnItem = new JButton("Return Item");
@@ -357,7 +357,8 @@ public class Library
         //GUI END--------------------------------------------------------------------------------------
 
         //Set function for buttons
-        returnItem.addActionListener(new ActionListener() {
+        returnItem.addActionListener(new ActionListener()
+        {
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -426,18 +427,34 @@ public class Library
 
                         //GUI--------------------------------------------------------------------
 
+                        //Components
                         JFrame tempFrame = new JFrame(item.getName() +" Information");
                         JPanel tempPanel = new JPanel();
-                        tempPanel.setLayout(new BoxLayout(tempPanel, BoxLayout.Y_AXIS));
-                        tempPanel.add(new JLabel("ID: " + item.getID()));
-                        tempPanel.add(new JLabel("Name: " + item.getName()));
-                        tempPanel.add(new JLabel("Best Seller: " + bestSeller));
-                        tempPanel.add(new JLabel("Date Checkout: " + item.getDateCheckout()));
-                        tempPanel.add(new JLabel("Due Date: " + dueDate));
+                        tempPanel.setLayout(new GridLayout(5,1));
+                        Font font = new Font("Arial", Font.BOLD, 25);
+
+                        JLabel idLabel, nameLabel, bestSellerLabel, checkoutLabel, dueDateLabel;
+                        idLabel = new JLabel("ID:        " + item.getID());
+                        idLabel.setFont(font);
+                        nameLabel = new JLabel("Name:        " + item.getName());
+                        nameLabel.setFont(font);
+                        bestSellerLabel = new JLabel("Best Seller:        " + bestSeller);
+                        bestSellerLabel.setFont(font);
+                        checkoutLabel = new JLabel("Date Checkout:        " + item.getDateCheckout());
+                        checkoutLabel.setFont(font);
+                        dueDateLabel = new JLabel("Due Date:        " + dueDate);
+                        dueDateLabel.setFont(font);
+
+                        //Add to frame and panel
+                        tempPanel.add(idLabel);
+                        tempPanel.add(nameLabel);
+                        tempPanel.add(bestSellerLabel);
+                        tempPanel.add(checkoutLabel);
+                        tempPanel.add(dueDateLabel);
 
                         tempFrame.add(tempPanel);
-                        tempFrame.setSize(200,200);
-                        tempFrame.pack();
+                        tempFrame.setSize(600,400);
+
                         tempFrame.setVisible(true);
                         tempFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
