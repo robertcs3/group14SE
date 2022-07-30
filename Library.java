@@ -1,9 +1,15 @@
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class Library
 {
@@ -353,13 +359,104 @@ public class Library
         //Set function for buttons
         returnItem.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
+                //List of checkout items
                 ArrayList<CheckOutAble> itemList = system.getCheckoutItems(currentUserID);
-                JList listOfItems = new JList();
-                DefaultListModel<CheckOutAble> listModel = new DefaultListModel<>();
-                listOfItems.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-                listOfItems.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-                listOfItems.setVisibleRowCount(-1);
+                HashMap<Integer, CheckOutAble> itemLookupMap = new HashMap<Integer,CheckOutAble>();
+
+                for(CheckOutAble item: itemList)
+                {
+                    itemLookupMap.put(item.getID(), item);
+                }
+
+                JFrame checkoutItemFrame = new JFrame("Checkout Item Frame");
+                JPanel checkoutItemPanel = new JPanel();
+                JPanel buttonPanel = new JPanel();
+                buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+
+                DefaultListModel listModel = new DefaultListModel();
+                JList list = new JList(listModel);
+                JScrollPane listScrollPane = new JScrollPane(list);
+
+                //Add checkout items into the list
+                for(CheckOutAble item: itemList)
+                {
+                    String itemString = item.getID() + " " +item.getName();
+                    listModel.addElement(itemString);
+                }
+                //Buttons
+                JButton getInfoButton = new JButton("Get Info");
+                JButton returnItemButton = new JButton("Return Item");
+
+                buttonPanel.add(getInfoButton);
+                buttonPanel.add(returnItemButton);
+                buttonPanel.add(Box.createHorizontalStrut(5));
+                buttonPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+
+                //Add list into scroll pane
+                list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+                list.setSelectedIndex(0);
+                list.setVisibleRowCount(5);
+
+                //Add scroll pane to checkoutItemPanel
+                checkoutItemPanel.add(listScrollPane, BorderLayout.CENTER);
+                checkoutItemPanel.add(buttonPanel, BorderLayout.PAGE_END);
+
+                checkoutItemFrame.add(checkoutItemPanel);
+                checkoutItemFrame.pack();
+                checkoutItemFrame.setVisible(true);
+                checkoutItemFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+                getInfoButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //Get item information
+                        String itemID = list.getSelectedValue().toString();
+                        itemID = itemID.substring(0,5);
+                        CheckOutAble item = itemLookupMap.get(Integer.parseInt(itemID));
+                        boolean bestSeller = false;
+                        if(itemID.charAt(4) != '0')
+                        {
+                            bestSeller = true;
+                        }
+                        //Get due date
+                        Date currentDate = new Date();
+                        Date dueDate = new Date(item.getDateCheckout().getTime() + TimeUnit.DAYS.toMillis(item.getDurationLimit()));//Due date
+
+                        //GUI--------------------------------------------------------------------
+
+                        JFrame tempFrame = new JFrame(item.getName() +" Information");
+                        JPanel tempPanel = new JPanel();
+                        tempPanel.setLayout(new BoxLayout(tempPanel, BoxLayout.Y_AXIS));
+                        tempPanel.add(new JLabel("ID: " + item.getID()));
+                        tempPanel.add(new JLabel("Name: " + item.getName()));
+                        tempPanel.add(new JLabel("Best Seller: " + bestSeller));
+                        tempPanel.add(new JLabel("Date Checkout: " + item.getDateCheckout()));
+                        tempPanel.add(new JLabel("Due Date: " + dueDate));
+
+                        tempFrame.add(tempPanel);
+                        tempFrame.setSize(200,200);
+                        tempFrame.pack();
+                        tempFrame.setVisible(true);
+                        tempFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+                        //GUI--------------------------------------------------------------------
+                    }
+                });
+
+                returnItemButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //Get item ID
+                        String itemID = list.getSelectedValue().toString();
+                        itemID = itemID.substring(0,5);
+                        list.remove(list.getSelectedIndex());
+
+                        //Return item
+                        system.returnItem(Integer.parseInt(itemID), currentUserID);
+                    }
+                });
             }
         });
 
