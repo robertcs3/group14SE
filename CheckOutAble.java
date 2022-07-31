@@ -4,6 +4,8 @@ public interface CheckOutAble
 {
 
     public void setRenewStatus(boolean status);
+
+    public boolean getRenewStats();
     public String getName();
     public void setName(String name);
     public Date getDateCheckout();

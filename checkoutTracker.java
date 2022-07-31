@@ -56,6 +56,8 @@ public class checkoutTracker {
                         Date checkoutDate = new SimpleDateFormat("MM/dd/yyyy").parse(logLine[i]);
                         i += 1;
                         CheckOutAble itemToAdd = this.item(Integer.parseInt(logLine[i]));
+                        i += 1;
+                        itemToAdd.setRenewStatus(Boolean.parseBoolean(logLine[i]));
                         itemToAdd.setDateCheckout(checkoutDate);
                         items.add(itemToAdd);
                     }
@@ -113,6 +115,11 @@ public class checkoutTracker {
             //System.out.println("User has outstanding fines, cannot renew");
             return false;
         }
+        // Check for item is already been renewed
+        if (item(itemID).getRenewStats()){
+            return false;
+        }
+
         // get index of item to renew
         int itemToRenewIndex = -1;
         for (int i = 0; i < checkoutLog.get(userID).size(); i++) {
@@ -325,6 +332,7 @@ public class checkoutTracker {
                 {
                     writeToFileString += "," + writeFormat.format(outPutFormat.parse(itemToWrite.getDateCheckout().toString())) + ",";//date
                     writeToFileString += itemToWrite.getID();//item id
+                    writeToFileString += String.valueOf(itemToWrite.getRenewStats());
                 }
                 writeToFileString +="\n";
             }
