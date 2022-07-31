@@ -547,7 +547,7 @@ public class Library
         JButton checkoutItem = new JButton("Checkout Item");
         JButton returnItem = new JButton("Return Item");
         JButton requestItem = new JButton("Request Item");
-        JButton payFine = new JButton("Pay Fines");
+        JButton showFinesDetail = new JButton("Pay Fines");
         JButton getUserInfo = new JButton("User Info");
         JButton LogOut = new JButton("Log Out");
         JLabel finesOwn = new JLabel("Outstanding Fine: $"+fines, SwingConstants.CENTER);
@@ -562,7 +562,7 @@ public class Library
         userPanel.add(returnItem);
         userPanel.add(new JLabel());//Blank component for padding
         userPanel.add(requestItem);
-        userPanel.add(payFine);
+        userPanel.add(showFinesDetail);
         userPanel.add(new JLabel());//Blank component for padding
         userPanel.add(getUserInfo);
         userPanel.add(new JLabel());
