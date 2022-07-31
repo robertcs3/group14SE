@@ -2,7 +2,6 @@ import java.util.Date;
 
 public interface CheckOutAble
 {
-
     public void setRenewStatus(boolean status);
 
     public boolean getRenewStats();

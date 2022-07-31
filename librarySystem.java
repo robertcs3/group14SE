@@ -73,7 +73,7 @@ class librarySystem  {
     public int checkOutItem(int itemID, int userID)
     {
         System.out.println(itemID);
-        return checkoutTracker.checkOutItem(userID, libraryCatalog.getItem(itemID));
+        return checkoutTracker.checkOutItem(userID, libraryCatalog.getItem(itemID), currentUser.isChild());
     }
 
     public void payFine(double amount){//BRANDON DOING IT
@@ -83,9 +83,10 @@ class librarySystem  {
     public boolean requestItem(int itemID)//BRANDON
     {
         if(libraryCatalog.isRequest(itemID)){
-            try {
-                BufferedWriter updatedRequestLog = new BufferedWriter(new FileWriter("outstandingRequest1.csv", true));
-                updatedRequestLog.write(Integer.toString(itemID) + ",");
+            try
+            {
+                BufferedWriter updatedRequestLog = new BufferedWriter(new FileWriter("outstandingRequest.csv", true));
+                updatedRequestLog.write("," + Integer.toString(itemID));
                 updatedRequestLog.close();
                 return true;
             }
@@ -96,12 +97,12 @@ class librarySystem  {
         return false;
     }
 
-    public boolean renewItem(int itemID)//DO IT TODAY
+    public boolean renewItem(int itemID)
     {
         return checkoutTracker.renewItem( itemID, currentUser.getID(),this);
     }
 
-    public void returnItem(int itemID, int userID)//DONE
+    public void returnItem(int itemID, int userID)
     {
         checkoutTracker.returnItem(itemID, userID, libraryCatalog);
     }

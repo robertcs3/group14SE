@@ -40,7 +40,7 @@ public class Library
 
         public void mode(int id)
         {
-            //0 == checkoutItem, 1 == returnItem, 2 == renewItem
+            //0 == checkoutItem, 0 == CheckoutItem, 1 == returnItem, 2 == requestItem
             modeID = id;
         }
 
@@ -159,7 +159,72 @@ public class Library
                         tempPanel.add(bestSellerLabel);
                     }
                 }
+                else if(modeID == 2)
+                {
+                    //Get item's info
+                    CheckOutAble item = null;
+                    for(CheckOutAble tempItem: system.getItemList())//Get item info from the catalog
+                    {
+                        if(tempItem.getID() == Integer.parseInt(itemID))
+                        {
+                            item = tempItem;
+                            break;
+                        }
+                    }
+                    //GUI--------------------------------------------------------------------
 
+                    //Components
+                    tempPanel.setLayout(new GridLayout(5,1));
+                    Font font = new Font("Arial", Font.BOLD, 25);
+
+                    JLabel idLabel, nameLabel, bestSellerLabel, itemType, duration, value;
+                    idLabel = new JLabel("ID:        " + item.getID());
+                    idLabel.setFont(font);
+                    nameLabel = new JLabel("Name:        " + item.getName());
+                    nameLabel.setFont(font);
+
+                    //Add to frame and panel
+                    tempPanel.add(idLabel);
+                    tempPanel.add(nameLabel);
+
+                    //Check item type
+                    itemType = new JLabel();
+                    itemType.setFont(font);
+                    tempPanel.add(itemType);
+                    if(item instanceof  book )
+                    {
+                        itemType.setText("Category:      Book");
+                        bestSellerLabel = new JLabel();
+                        bestSellerLabel.setFont(font);
+                        //Check if best seller
+                        if(itemID.charAt(4) != '0')
+                        {
+                            bestSellerLabel.setText("Best Seller:        TRUE");
+                        }
+                        else
+                        {
+                            bestSellerLabel.setText("Best Seller:        FALSE");
+                            tempPanel.add(bestSellerLabel);
+
+                        }
+                        tempPanel.add(bestSellerLabel);
+                    }
+                    else if(item instanceof  video)
+                        itemType.setText("Category:      Video");
+                    else
+                        itemType.setText("Category:      Audio");
+
+                    duration = new JLabel("Days can checkout:     " + item.getDurationLimit() + " Days");
+                    duration.setFont(font);
+
+                    value = new JLabel("Value:       $" + item.getValue());
+                    value.setFont(font);
+
+                    tempPanel.add(duration);
+                    tempPanel.add(value);
+                }
+
+                //Add panel into frame
                 tempFrame.add(tempPanel);
                 tempFrame.setSize(600,400);
 
@@ -681,8 +746,9 @@ public class Library
                 }
             }
         });
-        //Checkout Item================================================================================
 
+        //Checkout Item================================================================================
+        //DONE AND WORK
         checkoutItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -760,6 +826,10 @@ public class Library
                         {
                             JOptionPane.showMessageDialog(checkoutFrame, "No copies for checkout");
                         }
+                        else if(successValue == 3)
+                        {
+                            JOptionPane.showMessageDialog(checkoutFrame, "Children 12 and under can only checkout 5 items");
+                        }
                         else if(successValue == 0)
                         {
                             JOptionPane.showMessageDialog(checkoutFrame, "Item Checkout");
@@ -773,10 +843,99 @@ public class Library
                 getInfoButton.addActionListener(getInfoAction);
             }
         });
-
         //Checkout Item================================================================================
 
+        //Request Item||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        //DONE AND WORK
+        requestItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ArrayList<CheckOutAble> requestAbleList = new ArrayList<>();
+                for(CheckOutAble item: system.getItemList())//Get item with no copies
+                {
+                    if(item.getCopies() == 0)
+                        requestAbleList.add(item);//Add into list
+                }
 
+                if(!requestAbleList.isEmpty())
+                {
+                    //GUI------------------------------------------------------------------------------------------
+                    JFrame requestItemFrame = new JFrame("Request Item");
+                    JPanel requestItemPanel = new JPanel();
+                    JPanel buttonPanel = new JPanel();
+                    buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+
+                    DefaultListModel listModel = new DefaultListModel();
+
+                    //Add checkout items into the list
+                    for(CheckOutAble item: requestAbleList)
+                    {
+                        String itemString = item.getID()+"";
+                        if(item instanceof  book)
+                            itemString += "     Book     "+ item.getName();
+                        else if(item instanceof  video)
+                            itemString += "     Video    "+ item.getName();
+                        else
+                            itemString += "     Audio    "+ item.getName();
+
+                        listModel.addElement(itemString);//Add item to list
+                    }
+                    JList list = new JList(listModel);
+                    list.setFont(new Font("",Font.BOLD, 15));
+                    JScrollPane listScrollPane = new JScrollPane(list);
+
+
+                    //Buttons
+                    JButton getInfoButton = new JButton("Get Info");
+                    JButton requestItemButton = new JButton("Request Item");
+
+                    buttonPanel.add(getInfoButton);
+                    buttonPanel.add(requestItemButton);
+                    buttonPanel.add(Box.createHorizontalStrut(20));
+                    buttonPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+
+                    //Add list into scroll pane
+                    list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+                    list.setSelectedIndex(0);
+                    list.setVisibleRowCount(20);
+                    list.setFixedCellWidth(500);
+
+                    //Add scroll pane to checkoutItemPanel
+                    requestItemPanel.setPreferredSize(new Dimension(500,500));
+                    requestItemPanel.add(listScrollPane);
+                    requestItemPanel.add(buttonPanel);
+
+                    requestItemFrame.add(requestItemPanel);
+                    requestItemFrame.setSize(800,800);
+                    requestItemFrame.setVisible(true);
+                    requestItemFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+                    //GUI------------------------------------------------------------------------------------------
+
+                    //Buttons function
+                    requestItemButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            String itemID = list.getSelectedValue().toString();
+                            itemID = itemID.substring(0,5);
+                            boolean requestSuccess = system.requestItem(Integer.parseInt(itemID));
+                            if(requestSuccess)
+                                JOptionPane.showMessageDialog(requestItemFrame, "Item request successful");
+                            else
+                                JOptionPane.showMessageDialog(requestItemFrame, "Copies of item available for checkout");
+                        }
+                    });
+
+                    //Get info
+                    getInfoAction.mode(2);
+                    getInfoAction.setList(list);
+                    getInfoButton.addActionListener(getInfoAction);
+                }
+            }
+        });
+
+        //Get user information
+        //DONE AND WORK
         getUserInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -821,6 +980,8 @@ public class Library
             }
         });
 
+        //Log out of account
+        //DONE AND WORK
         LogOut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

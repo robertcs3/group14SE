@@ -38,7 +38,6 @@ public class checkoutTracker {
                 }
             }
 
-        
             //read checkoutLog.csv
             br = new BufferedReader(new FileReader("checkoutLog.csv"));
             int counter = 0;
@@ -71,8 +70,13 @@ public class checkoutTracker {
     }
 
     
-    public int checkOutItem(int userID, CheckOutAble item) // return 0 == checkout, 1 == outstanding request for item, 2 == no copies
+    public int checkOutItem(int userID, CheckOutAble item, boolean isChild)
     {
+        // return 0 == checkout, 1 == outstanding request for item, 2 == no copies, 3 == a child and more than 5 items
+        if(isChild && checkoutLog.get(userID).size() == 5)
+        {
+            return 3;
+        }
         int returnValue = 0;
         if(checkOutStandingRequest(item.getID())){//There is an outstanding request for the item
             returnValue = 1;
