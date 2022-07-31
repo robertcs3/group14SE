@@ -172,8 +172,10 @@ public class catalog {
     }
 
     public CheckOutAble getItem(int itemID) {
-        if (itemChecker(itemID)) {
-            return checkOutAbleList.get(checkOutAbleList.indexOf(itemID));
+        for (int index = 0; index < checkOutAbleList.size(); ++index) {
+            if (checkOutAbleList.get(index).getID() == itemID) {
+                return checkOutAbleList.get(index);
+            }
         }
         return null;
     }
@@ -287,19 +289,3 @@ public class catalog {
     }
 
 }
-//    public static void main(String[] args){
-//        catalog testCatalog = new catalog();
-//
-//        // book test cases
-//        testCatalog.copiesDecrement(22731);
-//        testCatalog.copiesIncrement(40790);
-//
-//        // audio test cases
-//        testCatalog.copiesDecrement(97465);
-//        testCatalog.copiesIncrement(38375);
-//
-//        // video test cases
-//        testCatalog.copiesDecrement(87448);
-//        testCatalog.copiesIncrement(27205);
-//    }
-//}

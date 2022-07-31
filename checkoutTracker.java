@@ -49,44 +49,55 @@ public class checkoutTracker {
                 //Item ID will always be odd index number
                 int id = Integer.parseInt(logLine[0]);
                 ArrayList<CheckOutAble> items = new ArrayList<CheckOutAble>();
-                for(int i = 1; i < logLine.length; i++ )
+                if(logLine.length > 1)
                 {
-                    Date checkoutDate = new SimpleDateFormat("MM/dd/yyyy").parse(logLine[i]);
-                    i += 1;
-                    CheckOutAble itemToAdd = this.item(Integer.parseInt(logLine[i]));
-                    itemToAdd.setDateCheckout(checkoutDate);
-                    items.add(itemToAdd);
+                    for(int i = 1; i < logLine.length; i++ )
+                    {
+                        Date checkoutDate = new SimpleDateFormat("MM/dd/yyyy").parse(logLine[i]);
+                        i += 1;
+                        CheckOutAble itemToAdd = this.item(Integer.parseInt(logLine[i]));
+                        itemToAdd.setDateCheckout(checkoutDate);
+                        items.add(itemToAdd);
+                    }
+                    checkoutLog.put(id,items);
                 }
-                checkoutLog.put(id,items);
             }
         } catch (Exception e){
-    
+            System.out.println("Checkout log: ");
             e.printStackTrace();
         }
     }
 
     
-    public boolean checkOutItem(int userID, CheckOutAble item)
+    public int checkOutItem(int userID, CheckOutAble item) // return 0 == checkout, 1 == outstanding request for item, 2 == no copies
     {
-        if(checkOutStandingRequest(item.getID())){
-            System.out.println("Item has outstanding request");
-            return false;
+        int returnValue = 0;
+        if(checkOutStandingRequest(item.getID())){//There is an outstanding request for the item
+            returnValue = 1;
         }
-
-        if(checkoutLog.containsKey(userID))
+        else if(item.getCopies() < 1)//There are no copies
         {
-            checkoutLog.get(userID).add(item);
-            writeData();
-            return true;
+            System.out.println("No copies");
+            returnValue = 2;
         }
         else
         {
-            ArrayList<CheckOutAble> itemList = new ArrayList<CheckOutAble>();
-            itemList.add(item);
-            checkoutLog.put(userID,itemList);
+            returnValue = 0;
+            if(checkoutLog.containsKey(userID))
+            {
+                System.out.println("Check 1");
+                checkoutLog.get(userID).add(item);
+            }
+            else
+            {
+                System.out.println("Check 2");
+                ArrayList<CheckOutAble> itemList = new ArrayList<CheckOutAble>();
+                itemList.add(item);
+                checkoutLog.put(userID,itemList);
+            }
             writeData();
-            return true;
         }
+        return returnValue;
     }
 
     //Renew an item
@@ -136,7 +147,7 @@ public class checkoutTracker {
                 fileToWrite.write(writeToFileString);
                 fileToWrite.close();
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.println("Checoutlog write: \n" +e);
 
             }
         }
@@ -157,7 +168,6 @@ public class checkoutTracker {
         //Contains userID
         if (checkoutLog.containsKey(userID)) {
             //Initialize temp arraylist
-            ArrayList<CheckOutAble> newItems = new ArrayList<>();
             boolean removeItem = false;
             int itemToRemoveIndex = 0;
             //Iterate through checked out items
@@ -166,6 +176,7 @@ public class checkoutTracker {
                 if (item.getID() == itemID) {
                     removeItem = true;
                     itemToRemoveIndex = checkoutLog.get(userID).indexOf(item);
+                    libCatalog.copiesIncrement(1);
                     break;
                 }
             }
@@ -186,7 +197,7 @@ public class checkoutTracker {
                 }
                 catch(Exception e)
                 {
-                    System.out.println(e);
+                    System.out.println("Checkoutlog write data: " +e);
                 }
             }
         } else {
@@ -197,44 +208,48 @@ public class checkoutTracker {
      public ArrayList<CheckOutAble> outStandingFine (int userID, HashMap<Integer,Integer> itemList)
      {
          ArrayList<CheckOutAble> overdueList = new ArrayList<>();
-         //Get today date to compare
-         try
+         if(checkoutLog.containsKey(userID))
          {
-             Date currentDate = new Date();
- 
-             for(CheckOutAble item: checkoutLog.get(userID))
+             //Get today date to compare
+             try
              {
-                 //Assign value to item
-                 item.setValue(itemList.get(item.getID()));
- 
-                 // getting difference in time from both date classes
-                 long difference_In_Time = currentDate.getTime() - item.getDateCheckout().getTime();
- 
-                 // getting difference in time to days (int)
-                 long difference_In_Days = (difference_In_Time / (1000*60*60*24)) % 365;
- 
-                 if(item instanceof book)// If item is a book
+                 Date currentDate = new Date();
+
+                 for(CheckOutAble item: checkoutLog.get(userID))
                  {
-                     if(((book) item).isBestSeller())
+                     //Assign value to item
+                     item.setValue(itemList.get(item.getID()));
+
+                     // getting difference in time from both date classes
+                     long difference_In_Time = currentDate.getTime() - item.getDateCheckout().getTime();
+
+                     // getting difference in time to days (int)
+                     long difference_In_Days = (difference_In_Time / (1000*60*60*24)) % 365;
+
+                     if(item instanceof book)// If item is a book
                      {
+                         if(((book) item).isBestSeller())
+                         {
+                             if(difference_In_Days > 14)
+                                 overdueList.add(item);
+                         }
+                         else
+                         {
+                             if(difference_In_Days > 21)
+                                 overdueList.add(item);
+                         }
+                     }
+                     else if(item instanceof video || item instanceof audio)// If item is a audio/video material
                          if(difference_In_Days > 14)
                              overdueList.add(item);
-                     }
-                     else
-                     {
-                         if(difference_In_Days > 21)
-                             overdueList.add(item);
-                     }
                  }
-                 else if(item instanceof video || item instanceof audio)// If item is a audio/video material
-                     if(difference_In_Days > 14)
-                         overdueList.add(item);
+
              }
- 
-         }
-         catch(Exception e)
-         {
-             System.out.println(e);
+             catch(Exception e)
+             {
+                 System.out.println("Overdue : \n"+e);
+                 e.printStackTrace();
+             }
          }
          return overdueList;
      }
@@ -282,7 +297,7 @@ public class checkoutTracker {
         }
         catch(Exception e)
         {
-            System.out.println(e);
+            System.out.println("Readfile : \n" + e);
         }
         return null;
     }
@@ -323,7 +338,7 @@ public class checkoutTracker {
         }
         catch(Exception e)
         {
-            System.out.println(e);
+            System.out.println("Write to file at end: \n"+ e);
         }
     }
    

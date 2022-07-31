@@ -34,7 +34,7 @@ class librarySystem  {
         }
         catch (IOException ex)
         {
-            System.out.println(ex);
+            System.out.println("Read file: " + ex);
         }
     }
 
@@ -59,7 +59,7 @@ class librarySystem  {
         }
         catch(Exception e)
         {
-            System.out.println(e);
+            System.out.println("Write file: "+ e);
         }
     }
 
@@ -70,21 +70,13 @@ class librarySystem  {
         memberList.add(newUser);
     }
 
-    public boolean checkOutItem(int itemID, int userID)
+    public int checkOutItem(int itemID, int userID)
     {
-        for(CheckOutAble item: getItemList())
-        {
-            if(item.getID() == itemID)
-                return checkoutTracker.checkOutItem(userID, item);
-        }
-        return false;
+        System.out.println(itemID);
+        return checkoutTracker.checkOutItem(userID, libraryCatalog.getItem(itemID));
     }
 
     public void payFine(double amount){//BRANDON DOING IT
-
-    }
-
-    public void deleteMember(int memberID){//DO LATER
 
     }
 
@@ -98,7 +90,7 @@ class librarySystem  {
                 return true;
             }
             catch (Exception e){
-                System.out.println(e);
+                System.out.println("Write file in request: "+ e);
             }
         }
         return false;
@@ -123,7 +115,9 @@ class librarySystem  {
             itemValueList.put(item.getID(), item.getValue());
         }
         ArrayList<CheckOutAble> outstandingItemList = checkoutTracker.outStandingFine(userID, itemValueList);
-        double returnValue = paymentSystem.billTotal(outstandingItemList);
+        double returnValue = 0;
+        if(!outstandingItemList.isEmpty())
+            returnValue = paymentSystem.billTotal(outstandingItemList);
         return returnValue;
     }
 
