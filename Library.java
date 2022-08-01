@@ -843,31 +843,33 @@ public class Library
                     {
                         String itemID = list.getSelectedValue().toString();
                         itemID = itemID.substring(0,5);
-                        // return 0 == checkout, 1 == outstanding request for item, 2 == no copies
-                        int successValue = system.checkOutItem(Integer.parseInt(itemID), currentUserID);
-                        if(Integer.parseInt(fines) > 0)
+                        if(Double.parseDouble(fines) > 0)
                         {
                             JOptionPane.showMessageDialog(checkoutFrame, "You must pay the outstanding fine before you can check out an item");
                         }
-                        else if(successValue == 1)
+                        else
                         {
-                            JOptionPane.showMessageDialog(checkoutFrame, "There are outstanding request for the item");
-                        }
-                        else if(successValue == 2)
-                        {
-                            JOptionPane.showMessageDialog(checkoutFrame, "No copies for checkout");
-                        }
-                        else if(successValue == 3)
-                        {
-                            JOptionPane.showMessageDialog(checkoutFrame, "Children 12 and under can only checkout 5 items");
-                        }
-                        else if(successValue == 0)
-                        {
-                            JOptionPane.showMessageDialog(checkoutFrame, "Item Checkout");
+                            // return 0 == checkout, 1 == outstanding request for item, 2 == no copies
+                            int successValue = system.checkOutItem(Integer.parseInt(itemID), currentUserID);
+                            if(successValue == 1)
+                            {
+                                JOptionPane.showMessageDialog(checkoutFrame, "There are outstanding request for the item");
+                            }
+                            else if(successValue == 2)
+                            {
+                                JOptionPane.showMessageDialog(checkoutFrame, "No copies for checkout");
+                            }
+                            else if(successValue == 3)
+                            {
+                                JOptionPane.showMessageDialog(checkoutFrame, "Children 12 and under can only checkout 5 items");
+                            }
+                            else if(successValue == 0)
+                            {
+                                JOptionPane.showMessageDialog(checkoutFrame, "Item Checkout");
+                            }
                         }
                     }
                 });
-
                 //Get item's info function
                 getInfoAction.mode(0);
                 getInfoAction.setList(list);
