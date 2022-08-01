@@ -72,7 +72,10 @@ class librarySystem  {
 
     public int checkOutItem(int itemID, int userID)
     {
-        return checkoutTracker.checkOutItem(userID, libraryCatalog.getItem(itemID), currentUser.isChild());
+       int returnValue = checkoutTracker.checkOutItem(userID, libraryCatalog.getItem(itemID), currentUser.isChild());
+       if(returnValue == 0)
+           libraryCatalog.copiesDecrement(itemID);
+       return  returnValue;
     }
 
     public HashMap<Integer,ArrayList<String>> showFinesDetail(int userID)

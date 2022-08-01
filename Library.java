@@ -593,9 +593,7 @@ public class Library
                     if(item instanceof  magazine)
                         itemString += "     Magazine     "+ item.getName();
                     else if(item instanceof  referenceBook)
-                        itemString += "     Video    "+ item.getName();
-                    else
-                        itemString += "     Audio    "+ item.getName();
+                        itemString += "     Reference Book    "+ item.getName();
 
                     listModel.addElement(itemString);//Add item to list
                 }
