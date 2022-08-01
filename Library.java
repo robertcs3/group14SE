@@ -646,7 +646,7 @@ public class Library
                     //name , value, daysOverdue, subTotal
                     displayString += "<pre>\n Item ID: " + id;
                     displayString += "\n      Item Name: " + finesDetailList.get(id).get(0);
-                    displayString += "\n      Item Value: " + finesDetailList.get(id).get(1);
+                    displayString += "\n      Item Value: $" + finesDetailList.get(id).get(1);
                     displayString += "\n      Days Overdue: " + finesDetailList.get(id).get(2);
                     displayString += "\n      <b> Fines Amount:</b> $"+finesDetailList.get(id).get(3) + "\n</pre>";
                 }
@@ -711,13 +711,16 @@ public class Library
                         public void actionPerformed(ActionEvent e) {
                             String itemID = list.getSelectedValue();
                             itemID = itemID.substring(0,5);
-                            if(system.renewItem(Integer.parseInt(itemID)))
+                            switch(system.renewItem(Integer.parseInt(itemID)))
                             {
-                                JOptionPane.showMessageDialog(renewFrame, "Item Successfully Renew");
-                            }
-                            else
-                            {
-                                JOptionPane.showMessageDialog(renewFrame, "There an outstanding fine in your account or outstanding request for the item");
+                                case 0: JOptionPane.showMessageDialog(renewFrame, "Item Successfully Renew");
+                                        break;
+                                case 1: JOptionPane.showMessageDialog(renewFrame, "You already renew this item");
+                                        break;
+                                case 2: JOptionPane.showMessageDialog(renewFrame, "There is an outstanding request for this item");
+                                        break;
+                                case 3: JOptionPane.showMessageDialog(renewFrame, "There is a fines on your account");
+                                        break;
                             }
                         }
                     });

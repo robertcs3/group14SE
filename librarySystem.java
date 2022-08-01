@@ -113,7 +113,7 @@ class librarySystem  {
         return false;
     }
 
-    public boolean renewItem(int itemID)
+    public int renewItem(int itemID)
     {
         return checkoutTracker.renewItem( itemID, currentUser.getID(),this);
     }

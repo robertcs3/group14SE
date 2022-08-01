@@ -114,21 +114,17 @@ public class checkoutTracker {
     }
 
     //Renew an item
-    public boolean renewItem(int itemID, int userID, librarySystem lib){
+    public int renewItem(int itemID, int userID, librarySystem lib){
 
         //Check for outstanding request on item
         if (checkOutStandingRequest(itemID)) {
             //System.out.println("Item has outstanding request, cannot renew");
-            return false;
+            return 2;
         }
         //Check for outstanding fine on user account
         if (lib.outStandingFine(userID) > 0.0) {
             //System.out.println("User has outstanding fines, cannot renew");
-            return false;
-        }
-        // Check for item is already been renewed
-        if (item(itemID).getRenewStats()){
-            return false;
+            return 3;
         }
 
         // get index of item to renew
@@ -138,6 +134,10 @@ public class checkoutTracker {
                 itemToRenewIndex = i;
                 break;
             }
+        }
+        if(checkoutLog.get(userID).get(itemToRenewIndex).getRenewStats() == true)
+        {
+            return 1;
         }
         // If renewed item was found in user's checkout log, update and write new info to file
         if (itemToRenewIndex != -1) {
@@ -149,6 +149,7 @@ public class checkoutTracker {
                 Date currentDate = new Date(System.currentTimeMillis());
                 checkoutLog.get(userID).get(itemToRenewIndex).setDateCheckout(currentDate);
                 checkoutLog.get(userID).get(itemToRenewIndex).setRenewStatus(true);
+
                 //Rewrite the data in checkoutLog.csv
                 String writeToFileString = "";
                 for (int id : checkoutLog.keySet()) {
@@ -171,7 +172,7 @@ public class checkoutTracker {
 
             }
         }
-        return true;
+        return 0;
         
 
     }
