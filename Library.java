@@ -481,7 +481,7 @@ public class Library
                         int userAge = Integer.parseInt(age.getText());
 
                         //add new user to userIDList and passwordList
-                        userIDList.add(currentUserID);
+                        userIDList.add(id);
                         passwordList.add(passWd);
 
                         //Write to login.csv
@@ -577,7 +577,22 @@ public class Library
         //Set function for buttons
         showFinesDetail.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
+                JFrame detailFineFrame = new JFrame("");
+                JPanel detailFinePanel = new JPanel();
+                detailFinePanel.setPreferredSize(new Dimension(500,500));
+
+                JTextArea finesDisplayArea = new JTextArea("Fines");
+
+                detailFinePanel.add(finesDisplayArea);
+                detailFineFrame.add(detailFinePanel);
+
+                detailFineFrame.setVisible(true);
+                detailFineFrame.pack();
+                detailFineFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+                HashMap<Integer, ArrayList<Integer>> finesDetailList = new HashMap<>();
 
             }
         });

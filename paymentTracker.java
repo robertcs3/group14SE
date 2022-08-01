@@ -27,7 +27,8 @@ class paymentTracker{
           if (result == '1'){
               durationLimit = 14;
           }
-          else{
+          else
+          {
               durationLimit = 21;
           }
 
@@ -57,7 +58,7 @@ class paymentTracker{
       return grandTotal;
   }
 
-  public void displayReceipt(CheckOutAble item){
+  public ArrayList<Integer> displayReceipt(CheckOutAble item){
       Date currentDate = new Date();
       // Getting date checked out to calculate days overdue
       Date checkedOut =item.getDateCheckout();
@@ -111,7 +112,11 @@ class paymentTracker{
                   + "\n" +"Item Value: " + item.getValue()
                   + "\n" + "Days Overdue: " + daysOverdue
                   + "\n" + "SubTotal: " + subTotal + "\n");
-
+          ArrayList<Integer> returnList = new ArrayList<>();
+          returnList.add(item.getValue());
+          returnList.add(daysOverdue);
+          returnList.add(subTotal);
+          return returnList;
       }
   }
 
