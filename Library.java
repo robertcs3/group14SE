@@ -37,7 +37,7 @@ public class Library
 
         public void mode(int id)
         {
-            //0 == checkoutItem, 0 == CheckoutItem, 1 == returnItem, 2 == requestItem
+            //0 == checkoutItem, 0 == CheckoutItem, 1 == returnItem, 2 == requestItem, 3 == renewItem
             modeID = id;
         }
 
@@ -220,6 +220,54 @@ public class Library
                     tempPanel.add(duration);
                     tempPanel.add(value);
                 }
+                else if(modeID == 3)
+                {
+                    CheckOutAble item = itemLookupMap.get(Integer.parseInt(itemID));
+                    //Get due date
+                    Date dueDate = new Date(item.getDateCheckout().getTime() + TimeUnit.DAYS.toMillis(item.getDurationLimit()));//Due date
+
+                    //GUI--------------------------------------------------------------------
+
+                    //Components
+                    tempPanel.setLayout(new GridLayout(5,1));
+                    Font font = new Font("Arial", Font.BOLD, 25);
+
+                    JLabel idLabel, nameLabel, bestSellerLabel, checkoutLabel, dueDateLabel;
+                    idLabel = new JLabel("ID:        " + item.getID());
+                    idLabel.setFont(font);
+                    nameLabel = new JLabel("Name:        " + item.getName());
+                    nameLabel.setFont(font);
+                    checkoutLabel = new JLabel("Date Checkout:        " + item.getDateCheckout());
+                    checkoutLabel.setFont(font);
+                    dueDateLabel = new JLabel("Due Date:        " + dueDate);
+                    dueDateLabel.setFont(font);
+
+                    //Add to frame and panel
+                    tempPanel.add(idLabel);
+                    tempPanel.add(nameLabel);
+
+                    tempPanel.add(checkoutLabel);
+                    tempPanel.add(dueDateLabel);
+
+                    //For book
+                    if(item instanceof  book )
+                    {
+                        bestSellerLabel = new JLabel();
+                        bestSellerLabel.setFont(font);
+                        if(itemID.charAt(4) != '0')
+                        {
+                            bestSellerLabel.setText("Best Seller:        TRUE");
+                        }
+                        else
+                        {
+                            bestSellerLabel.setText("Best Seller:        FALSE");
+                            tempPanel.add(bestSellerLabel);
+
+                        }
+                        tempPanel.add(bestSellerLabel);
+                    }
+                }
+
 
                 //Add panel into frame
                 tempFrame.add(tempPanel);
@@ -228,6 +276,7 @@ public class Library
                 tempFrame.setVisible(true);
                 tempFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             }
+
         }
 
         public void setLookUpMap(HashMap<Integer,CheckOutAble> itemLookupMap) {
@@ -682,8 +731,10 @@ public class Library
                         listModel.addElement(itemString);
                     }
                     //Button
+                    JButton getInfoButton = new JButton("Get info");
                     JButton renewItemButton = new JButton("Renew Item");
 
+                    buttonPanel.add(getInfoButton);
                     buttonPanel.add(renewItemButton);
                     buttonPanel.add(Box.createHorizontalStrut(5));
                     buttonPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -725,6 +776,15 @@ public class Library
                             }
                         }
                     });
+                    HashMap<Integer, CheckOutAble> itemLookupMap = new HashMap<Integer,CheckOutAble>();//List of checkoutItem
+                    for (CheckOutAble item : itemList)
+                    {
+                        itemLookupMap.put(item.getID(), item);
+                    }
+                    getInfoAction.setList(list);
+                    getInfoAction.setLookUpMap(itemLookupMap);
+                    getInfoAction.mode(3);
+                    getInfoButton.addActionListener(getInfoAction);
                 }
                 else
                 {
