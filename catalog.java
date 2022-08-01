@@ -194,6 +194,7 @@ public class catalog {
         for (int index = 0; index < checkOutAbleList.size(); ++index) {
             if (checkOutAbleList.get(index).getID() == itemID) {
                 checkOutAbleList.get(index).increaseCopy(1);
+                System.out.println(checkOutAbleList.get(index).getCopies());
             }
         }
         fileUpdate();
@@ -277,7 +278,7 @@ public class catalog {
 
                     CheckOutAble audioEntry = checkOutAbleList.get(index);
 
-                    newAudioList = new BufferedWriter(new FileWriter("audiov", true));
+                    newAudioList = new BufferedWriter(new FileWriter("audio.csv", true));
                     newAudioList.write(Integer.toString(audioEntry.getID())
                             + "," + audioEntry.getName()
                             + "," + Integer.toString(audioEntry.getValue())
