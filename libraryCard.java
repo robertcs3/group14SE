@@ -16,6 +16,7 @@ class libraryCard{
         this.lastName = lastName;
         this.address = address;
         this.phoneNumber = phoneNumber;
+
         if(age <= 12)
             isChild = true;
         else
@@ -82,6 +83,7 @@ class libraryCard{
     public void addFine(int updateFine){
         this.fine += updateFine;
     }
+
   
   
   }

@@ -76,8 +76,16 @@ class librarySystem  {
         return checkoutTracker.checkOutItem(userID, libraryCatalog.getItem(itemID), currentUser.isChild());
     }
 
-    public void payFine(double amount){//BRANDON DOING IT
-
+    public HashMap<Integer,Double> showFinesDetail(int userID)
+    {
+        HashMap<Integer,Integer> itemValueList = new HashMap<>();
+        for(CheckOutAble item: libraryCatalog.showCatalog())
+        {
+            itemValueList.put(item.getID(), item.getValue());
+        }
+        ArrayList<CheckOutAble> outstandingItemList = checkoutTracker.outStandingFine(userID, itemValueList);
+        //Get value for each implement in payment tracker
+        return null;//Place holder
     }
 
     public boolean requestItem(int itemID)//BRANDON

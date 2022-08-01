@@ -87,4 +87,8 @@ public class video implements  CheckOutAble{
     {
         dateCheckout = checkoutDate;
     }
+    @Override
+    public boolean getRenewStats() {
+        return isRenew;
+    }
 }

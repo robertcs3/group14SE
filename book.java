@@ -45,6 +45,11 @@ public class book implements  CheckOutAble
     }
 
     @Override
+    public boolean getRenewStats() {
+        return isRenew;
+    }
+
+    @Override
     public String getName() {
         return name;
     }

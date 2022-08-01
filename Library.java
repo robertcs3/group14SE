@@ -1,7 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,8 +10,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Library
 {
-    private ArrayList<Integer> userIDList = new ArrayList<Integer>();
-    private ArrayList<String> passwordList = new ArrayList<String>();
+    private final ArrayList<Integer> userIDList = new ArrayList<>();
+    private final ArrayList<String> passwordList = new ArrayList<>();
     //Fine currentLogin user own
     String fines = "";
 
@@ -29,11 +26,11 @@ public class Library
     //Helper to show item info
     public class getInfoActionListener implements ActionListener
     {
-        private JList list;
+        private JList<String> list;
         private int modeID = 0;
 
         private HashMap<Integer,CheckOutAble> itemLookupMap;
-        public void setList(JList list)
+        public void setList(JList<String> list)
         {
             this.list = list;
         }
@@ -50,7 +47,7 @@ public class Library
             if(list != null)
             {
                 //Get item ID
-                String itemID = list.getSelectedValue().toString();
+                String itemID = list.getSelectedValue();
                 itemID = itemID.substring(0,5);
 
                 //Initialize base components
@@ -547,7 +544,7 @@ public class Library
         JButton checkoutItem = new JButton("Checkout Item");
         JButton returnItem = new JButton("Return Item");
         JButton requestItem = new JButton("Request Item");
-        JButton showFinesDetail = new JButton("Pay Fines");
+        JButton showFinesDetail = new JButton("Fines Details");
         JButton getUserInfo = new JButton("User Info");
         JButton LogOut = new JButton("Log Out");
         JLabel finesOwn = new JLabel("Outstanding Fine: $"+fines, SwingConstants.CENTER);
@@ -574,7 +571,12 @@ public class Library
         //GUI END--------------------------------------------------------------------------------------
 
         //Set function for buttons
+        showFinesDetail.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
+            }
+        });
         //Request Renew-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
         //DONE AND WORK
         requestRenew.addActionListener(new ActionListener() {
@@ -587,20 +589,13 @@ public class Library
                 ArrayList<CheckOutAble> itemList = system.getCheckoutItems(currentUserID);
                 if(itemList != null)
                 {
-                    HashMap<Integer, CheckOutAble> itemLookupMap = new HashMap<Integer,CheckOutAble>();
-
-                    for(CheckOutAble item: itemList)
-                    {
-                        itemLookupMap.put(item.getID(), item);
-                    }
-
                     JFrame renewFrame = new JFrame("Request Item Frame");
                     JPanel renewPanel = new JPanel();
                     JPanel buttonPanel = new JPanel();
                     buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
 
-                    DefaultListModel listModel = new DefaultListModel();
-                    JList list = new JList(listModel);
+                    DefaultListModel<String> listModel = new DefaultListModel<>();
+                    JList<String> list = new JList<>(listModel);
                     JScrollPane listScrollPane = new JScrollPane(list);
 
                     //Add checkout items into the list
@@ -633,11 +628,12 @@ public class Library
                     //GUI END----------------------------------------------------------------------------------
 
                     //Button function
+                    //Fine Detail
                     //Renew-----------------------------------------------------------=============================
                     renewItemButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            String itemID = list.getSelectedValue().toString();
+                            String itemID = list.getSelectedValue();
                             itemID = itemID.substring(0,5);
                             if(system.renewItem(Integer.parseInt(itemID)))
                             {
@@ -681,7 +677,7 @@ public class Library
                     JPanel buttonPanel = new JPanel();
                     buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
 
-                    DefaultListModel listModel = new DefaultListModel();
+                    DefaultListModel<String> listModel = new DefaultListModel<>();
                     JList list = new JList(listModel);
                     JScrollPane listScrollPane = new JScrollPane(list);
 
@@ -762,7 +758,7 @@ public class Library
                 JPanel buttonPanel = new JPanel();
                 buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
-                DefaultListModel listModel = new DefaultListModel();
+                DefaultListModel<String> listModel = new DefaultListModel<>();
 
                 //Add checkout items into the list
                 for(CheckOutAble item: itemList)
@@ -865,7 +861,7 @@ public class Library
                     JPanel buttonPanel = new JPanel();
                     buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
-                    DefaultListModel listModel = new DefaultListModel();
+                    DefaultListModel<String> listModel = new DefaultListModel<>();
 
                     //Add checkout items into the list
                     for(CheckOutAble item: requestAbleList)
@@ -955,6 +951,7 @@ public class Library
                 phoneNumberLabel = new JLabel("Phone Number: " + system.getCurrentUser().getPhoneNumber());
                 isChildLabel = new JLabel("Child: " + system.getCurrentUser().isChild()+"");
 
+
                 //Configure jtextarea
                 addressLabel.setWrapStyleWord(true);
                 addressLabel.setLineWrap(true);
@@ -999,7 +996,7 @@ public class Library
     {
         try
         {
-            String line = "";
+            String line;
             BufferedReader fileReader = new BufferedReader(new FileReader("login.csv"));
             while((line = fileReader.readLine()) != null)
             {
@@ -1022,7 +1019,7 @@ public class Library
 
 
 
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         Library library = new Library();
     }

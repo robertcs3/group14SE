@@ -44,19 +44,19 @@ public class checkoutTracker {
             while((line = br.readLine()) != null)
             {
                 String[] logLine = line.split(",");
-                //Date will always be even index number
-                //Item ID will always be odd index number
+                //Renew then Date Checkout then ItemID
                 int id = Integer.parseInt(logLine[0]);
                 ArrayList<CheckOutAble> items = new ArrayList<CheckOutAble>();
                 if(logLine.length > 1)
                 {
                     for(int i = 1; i < logLine.length; i++ )
                     {
+                        boolean renewStat = Boolean.parseBoolean(logLine[i]);
+                        i += 1;
                         Date checkoutDate = new SimpleDateFormat("MM/dd/yyyy").parse(logLine[i]);
                         i += 1;
                         CheckOutAble itemToAdd = this.item(Integer.parseInt(logLine[i]));
-                        i += 1;
-                        itemToAdd.setRenewStatus(Boolean.parseBoolean(logLine[i]));
+                        itemToAdd.setRenewStatus(renewStat);
                         itemToAdd.setDateCheckout(checkoutDate);
                         items.add(itemToAdd);
                     }
@@ -167,7 +167,7 @@ public class checkoutTracker {
 
     }
     //Check for outstanding request
-    public boolean checkOutStandingRequest(int itemID){ 
+    public boolean checkOutStandingRequest(int itemID){ //Check if item have any outstanding request
         for (CheckOutAble item : outstandingRequestLog) {
             if (item.getID() == itemID) return true;
         }
@@ -216,7 +216,7 @@ public class checkoutTracker {
         }
     }
 
-     public ArrayList<CheckOutAble> outStandingFine (int userID, HashMap<Integer,Integer> itemList)
+     public ArrayList<CheckOutAble> outStandingFine (int userID, HashMap<Integer,Integer> itemList)//Get list of overdue items
      {
          ArrayList<CheckOutAble> overdueList = new ArrayList<>();
          if(checkoutLog.containsKey(userID))
