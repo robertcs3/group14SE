@@ -101,6 +101,8 @@ public class checkoutTracker {
             {
                 System.out.println("Check 2");
                 ArrayList<CheckOutAble> itemList = new ArrayList<CheckOutAble>();
+                Date currentDate = new Date(System.currentTimeMillis());
+                item.setDateCheckout(currentDate);
                 itemList.add(item);
                 checkoutLog.put(userID,itemList);
             }
