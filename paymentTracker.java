@@ -63,18 +63,23 @@ class paymentTracker{
       Date checkedOut =item.getDateCheckout();
 
           // durationLimit (after x days fees begin incurring)
-          int durationLimit;
-          int daysOverdue;
-          int subTotal;
+          int durationLimit = 0;
+          int daysOverdue= 0;
+          int subTotal= 0;
 
           String id = Integer.toString(item.getID());
           char result = id.charAt(4);
 
-          if (result == '1'){
-              durationLimit = 14;
+          if(item instanceof book){
+              if (result == '1'){
+                  durationLimit = 14;
+              }
+              else{
+                  durationLimit = 21;
+              }
           }
-          else{
-              durationLimit = 21;
+          else {
+              durationLimit = 14;
           }
 
           // getting difference in time from both date classes
