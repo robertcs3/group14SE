@@ -352,7 +352,7 @@ public class checkoutTracker {
             BufferedWriter fileToWrite = new BufferedWriter(new FileWriter("checkoutLog.csv", false));
             fileToWrite.write(writeToFileString);
             fileToWrite.close();
-            System.out.println(writeToFileString);
+            //System.out.println(writeToFileString);
 
         }
         catch(Exception e)

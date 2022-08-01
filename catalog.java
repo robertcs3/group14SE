@@ -193,8 +193,7 @@ public class catalog {
     public void copiesIncrement(int itemID) {
         for (int index = 0; index < checkOutAbleList.size(); ++index) {
             if (checkOutAbleList.get(index).getID() == itemID) {
-                checkOutAbleList.get(index).increaseCopy(1);
-                System.out.println(checkOutAbleList.get(index).getCopies());
+                checkOutAbleList.get(index).increaseCopy(itemID);
             }
         }
         fileUpdate();
