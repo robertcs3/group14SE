@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 class paymentTracker{
@@ -36,7 +37,7 @@ class paymentTracker{
           long difference_In_Time = currentDate.getTime() - checkedOut.getTime();
 
           // getting difference in time to days (int)
-          long difference_In_Days = (difference_In_Time / (1000*60*60*24)) % 365;
+          long difference_In_Days = TimeUnit.MILLISECONDS.toDays(difference_In_Time);
 
           // if the number of days exceeds the checkout period (i.e. item is overdue)
           // begin incurring fees
@@ -87,7 +88,7 @@ class paymentTracker{
           long difference_In_Time = currentDate.getTime() - checkedOut.getTime();
 
           // getting difference in time to days (int)
-          long difference_In_Days = (difference_In_Time / (1000*60*60*24)) % 365;
+          long difference_In_Days = TimeUnit.MILLISECONDS.toDays(difference_In_Time);
 
           if(difference_In_Days > durationLimit){
               daysOverdue = (int) difference_In_Days - durationLimit;

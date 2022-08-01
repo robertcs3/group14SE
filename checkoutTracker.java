@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 
@@ -242,7 +243,7 @@ public class checkoutTracker {
                      long difference_In_Time = currentDate.getTime() - item.getDateCheckout().getTime();
 
                      // getting difference in time to days (int)
-                     long difference_In_Days = (difference_In_Time / (1000*60*60*24)) % 365;
+                     long difference_In_Days = TimeUnit.MILLISECONDS.toDays(difference_In_Time);
 
                      if(item instanceof book)// If item is a book
                      {
