@@ -93,15 +93,12 @@ public class checkoutTracker {
             returnValue = 0;
             if(checkoutLog.containsKey(userID))
             {
-
-                System.out.println("Check 1");
                 Date currentDate = new Date(System.currentTimeMillis());
                 item.setDateCheckout(currentDate);
                 checkoutLog.get(userID).add(item);
             }
             else
             {
-                System.out.println("Check 2");
                 ArrayList<CheckOutAble> itemList = new ArrayList<CheckOutAble>();
                 Date currentDate = new Date(System.currentTimeMillis());
                 item.setDateCheckout(currentDate);
@@ -317,7 +314,7 @@ public class checkoutTracker {
         }
         catch(Exception e)
         {
-            System.out.println("Readfile : \n" + e);
+            System.out.println("Read file : \n" + e);
         }
         return null;
     }

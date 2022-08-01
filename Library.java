@@ -13,7 +13,7 @@ public class Library
     private final ArrayList<Integer> userIDList = new ArrayList<>();
     private final ArrayList<String> passwordList = new ArrayList<>();
     //Fine currentLogin user own
-    String fines = "";
+    String fines = "0";
 
     //Initialize helper function getInfoActionListener
     getInfoActionListener getInfoAction = new getInfoActionListener();
@@ -578,6 +578,7 @@ public class Library
         //Set function for buttons
 
         //Show magazine and reference book
+        //DONE AND WORK
         showUnCheckoutAbleItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -852,6 +853,8 @@ public class Library
 
                     listModel.addElement(itemString);//Add item to list
                 }
+
+
                 JList list = new JList(listModel);
                list.setFont(new Font("",Font.BOLD, 15));
                 JScrollPane listScrollPane = new JScrollPane(list);

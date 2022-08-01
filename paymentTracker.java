@@ -108,11 +108,6 @@ class paymentTracker{
               daysOverdue = 0;
               subTotal = 0;
           }
-
-          System.out.println("Item Name: " + item.getName()
-                  + "\n" +"Item Value: " + item.getValue()
-                  + "\n" + "Days Overdue: " + daysOverdue
-                  + "\n" + "SubTotal: " + subTotal + "\n");
           ArrayList<String> returnList = new ArrayList<>();
           returnList.add(""+item.getName());
           returnList.add(""+item.getValue());
