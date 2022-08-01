@@ -599,11 +599,11 @@ public class Library
                 for(int id: finesDetailList.keySet())
                 {
                     //name , value, daysOverdue, subTotal
-                    displayString += "<pre> Item ID: " + id + "</br>";
-                    displayString += "<br>      Item Name: " + finesDetailList.get(id).get(0) + "</br>";
-                    displayString += "<br>      Item Value: " + finesDetailList.get(id).get(1) + "</br>";
-                    displayString += "<br>      Days Overdue: " + finesDetailList.get(id).get(2) + "</br>";
-                    displayString += "<br>      <b> Fines Amount:</b> $"+finesDetailList.get(id).get(3) + "</pre>";
+                    displayString += "<pre>\n Item ID: " + id;
+                    displayString += "\n      Item Name: " + finesDetailList.get(id).get(0);
+                    displayString += "\n      Item Value: " + finesDetailList.get(id).get(1);
+                    displayString += "\n      Days Overdue: " + finesDetailList.get(id).get(2);
+                    displayString += "\n      <b> Fines Amount:</b> $"+finesDetailList.get(id).get(3) + "<\n/pre>";
                 }
                 finesDisplayArea.setText(displayString);
             }

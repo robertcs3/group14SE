@@ -341,9 +341,9 @@ public class checkoutTracker {
                 writeToFileString += ""+id;
                 for(CheckOutAble itemToWrite: checkoutLog.get(id))
                 {
+                    writeToFileString += "," + itemToWrite.getRenewStats();
                     writeToFileString += "," + writeFormat.format(outPutFormat.parse(itemToWrite.getDateCheckout().toString())) + ",";//date
                     writeToFileString += itemToWrite.getID();//item id
-                    writeToFileString += String.valueOf(itemToWrite.getRenewStats());
                 }
                 writeToFileString +="\n";
             }
