@@ -845,7 +845,11 @@ public class Library
                         itemID = itemID.substring(0,5);
                         // return 0 == checkout, 1 == outstanding request for item, 2 == no copies
                         int successValue = system.checkOutItem(Integer.parseInt(itemID), currentUserID);
-                        if(successValue == 1)
+                        if(Integer.parseInt(fines) > 0)
+                        {
+                            JOptionPane.showMessageDialog(checkoutFrame, "You must pay the outstanding fine before you can check out an item");
+                        }
+                        else if(successValue == 1)
                         {
                             JOptionPane.showMessageDialog(checkoutFrame, "There are outstanding request for the item");
                         }

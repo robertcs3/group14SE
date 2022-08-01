@@ -72,7 +72,7 @@ public class checkoutTracker {
     
     public int checkOutItem(int userID, CheckOutAble item, boolean isChild)
     {
-        // return 0 == checkout, 1 == outstanding request for item, 2 == no copies, 3 == a child and more than 5 items
+        // return 0 == checkout, 1 == outstanding request for item, 2 == no copies, 3 == a child and more than 5 items,
         if(isChild && checkoutLog.get(userID).size() == 5)
         {
             return 3;
