@@ -56,5 +56,57 @@ class paymentTracker{
       }
       return grandTotal;
   }
-}
+
+  public void displayReceipt(CheckOutAble item){
+      Date currentDate = new Date();
+      // Getting date checked out to calculate days overdue
+      Date checkedOut =item.getDateCheckout();
+
+          // durationLimit (after x days fees begin incurring)
+          int durationLimit;
+          int daysOverdue;
+          int subTotal;
+
+          String id = Integer.toString(item.getID());
+          char result = id.charAt(4);
+
+          if (result == '1'){
+              durationLimit = 14;
+          }
+          else{
+              durationLimit = 21;
+          }
+
+          // getting difference in time from both date classes
+          long difference_In_Time = currentDate.getTime() - checkedOut.getTime();
+
+          // getting difference in time to days (int)
+          long difference_In_Days = (difference_In_Time / (1000*60*60*24)) % 365;
+
+          if(difference_In_Days > durationLimit){
+              daysOverdue = (int) difference_In_Days - durationLimit;
+              double tempTotal = (difference_In_Days - durationLimit) * .10;
+              double itemValue = item.getValue();
+
+              // ensuring overdue fees can not exceed item price value
+
+              if(tempTotal > itemValue){
+                  subTotal = (int) itemValue;
+              }
+              else{
+                  subTotal = (int) tempTotal;
+              }
+          }
+          else{
+              daysOverdue = 0;
+              subTotal = 0;
+          }
+
+          System.out.println("Item Name: " + item.getName()
+                  + "\n" +"Item Value: " + item.getValue()
+                  + "\n" + "Days Overdue: " + daysOverdue
+                  + "\n" + "SubTotal: " + subTotal + "\n");
+
+      }
+  }
 
