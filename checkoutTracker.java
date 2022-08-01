@@ -194,7 +194,6 @@ public class checkoutTracker {
                 if (item.getID() == itemID) {
                     removeItem = true;
                     itemToRemoveIndex = checkoutLog.get(userID).indexOf(item);
-                    libCatalog.copiesIncrement(1);
                     break;
                 }
             }
@@ -205,7 +204,7 @@ public class checkoutTracker {
                 try
                 {
                     //Decrease amount of copies
-                    libCatalog.copiesDecrement(itemID);
+                    libCatalog.copiesIncrement(itemID);
 
                     //Remove item with the date from the Hashmap
                     checkoutLog.get(userID).remove(itemToRemoveIndex);
