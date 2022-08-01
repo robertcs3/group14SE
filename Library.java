@@ -542,13 +542,14 @@ public class Library
         userPanel.setLayout(userLayout);//Set layout for panel
 
         //Functions
-        JLabel welcomeLabel = new JLabel("Welcome Back", SwingConstants.CENTER);
+        JLabel welcomeLabel = new JLabel("<html>Welcome Back <br>" + currentUserID +"</html> ", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("", Font.BOLD, 25));
         JButton requestRenew = new JButton("Request Renew");
         JButton checkoutItem = new JButton("Checkout Item");
         JButton returnItem = new JButton("Return Item");
         JButton requestItem = new JButton("Request Item");
         JButton showFinesDetail = new JButton("Fines Details");
+        JButton showUnCheckoutAbleItem = new JButton("<html>Show Magazine and <br>Reference Book</html>");
         JButton getUserInfo = new JButton("User Info");
         JButton LogOut = new JButton("Log Out");
         JLabel finesOwn = new JLabel("Outstanding Fine: $"+fines, SwingConstants.CENTER);
@@ -564,7 +565,7 @@ public class Library
         userPanel.add(new JLabel());//Blank component for padding
         userPanel.add(requestItem);
         userPanel.add(showFinesDetail);
-        userPanel.add(new JLabel());//Blank component for padding
+        userPanel.add(showUnCheckoutAbleItem);
         userPanel.add(getUserInfo);
         userPanel.add(new JLabel());
         userPanel.add(LogOut);
@@ -575,6 +576,52 @@ public class Library
         //GUI END--------------------------------------------------------------------------------------
 
         //Set function for buttons
+
+        //Show magazine and reference book
+        showUnCheckoutAbleItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame uncheckoutFrame = new JFrame("Checkout Item");
+                JPanel uncheckoutPanel = new JPanel();
+
+                DefaultListModel<String> listModel = new DefaultListModel<>();
+
+                //Add checkout items into the list
+                for(UnCheckoutAble item: system.getUncheckoutAble())
+                {
+                    String itemString = item.getId()+"";
+                    if(item instanceof  magazine)
+                        itemString += "     Magazine     "+ item.getName();
+                    else if(item instanceof  referenceBook)
+                        itemString += "     Video    "+ item.getName();
+                    else
+                        itemString += "     Audio    "+ item.getName();
+
+                    listModel.addElement(itemString);//Add item to list
+                }
+                JList list = new JList(listModel);
+                list.setFont(new Font("",Font.BOLD, 15));
+                JScrollPane listScrollPane = new JScrollPane(list);
+
+                //Add list into scroll pane
+                list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+                list.setSelectedIndex(0);
+                list.setVisibleRowCount(20);
+                list.setFixedCellWidth(500);
+
+                //Add scroll pane to checkoutItemPanel
+                uncheckoutPanel.setPreferredSize(new Dimension(500,500));
+                uncheckoutPanel.add(listScrollPane);
+
+                uncheckoutFrame.add(uncheckoutPanel);
+                uncheckoutFrame.setSize(800,800);
+                uncheckoutFrame.setVisible(true);
+                uncheckoutFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+            }
+        });
+
+        //Show amount of fines user own for each item pass due date
         showFinesDetail.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -603,7 +650,7 @@ public class Library
                     displayString += "\n      Item Name: " + finesDetailList.get(id).get(0);
                     displayString += "\n      Item Value: " + finesDetailList.get(id).get(1);
                     displayString += "\n      Days Overdue: " + finesDetailList.get(id).get(2);
-                    displayString += "\n      <b> Fines Amount:</b> $"+finesDetailList.get(id).get(3) + "<\n/pre>";
+                    displayString += "\n      <b> Fines Amount:</b> $"+finesDetailList.get(id).get(3) + "\n</pre>";
                 }
                 finesDisplayArea.setText(displayString);
             }

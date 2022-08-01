@@ -145,6 +145,11 @@ class librarySystem  {
         return checkoutTracker.getCheckoutItems(userID);
     }
 
+    public ArrayList<UnCheckoutAble> getUncheckoutAble()
+    {
+        return libraryCatalog.getUncheckoutAble();
+    }
+
     public void setCurrentUser(int id)
     {
         for(libraryCard member: memberList)

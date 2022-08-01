@@ -212,15 +212,20 @@ public class catalog {
         return false;
     }
 
+    public ArrayList<UnCheckoutAble> getUncheckoutAble()
+    {
+        return unCheckoutAbleList;
+    }
+
     public void fileUpdate() {
         try {
-            BufferedWriter newBookList = new BufferedWriter(new FileWriter("book1.csv", false));
+            BufferedWriter newBookList = new BufferedWriter(new FileWriter("book.csv", false));
             newBookList.close();
 
-            BufferedWriter newVideoList = new BufferedWriter(new FileWriter("video1.csv", false));
+            BufferedWriter newVideoList = new BufferedWriter(new FileWriter("video.csv", false));
             newVideoList.close();
 
-            BufferedWriter newAudioList = new BufferedWriter(new FileWriter("audio1.csv", false));
+            BufferedWriter newAudioList = new BufferedWriter(new FileWriter("audio.csv", false));
             newAudioList.close();
 
             // Checking for all instances of book in checkOutAbleList
@@ -230,7 +235,7 @@ public class catalog {
 
                     CheckOutAble bookEntry = checkOutAbleList.get(index);
 
-                    newBookList = new BufferedWriter(new FileWriter("book1.csv", true));
+                    newBookList = new BufferedWriter(new FileWriter("book.csv", true));
                     newBookList.write(Integer.toString(bookEntry.getID())
                             + "," + bookEntry.getName()
                             + "," + Integer.toString(bookEntry.getValue())
@@ -253,7 +258,7 @@ public class catalog {
 
                     CheckOutAble videoEntry = checkOutAbleList.get(index);
 
-                    newVideoList = new BufferedWriter(new FileWriter("video1.csv", true));
+                    newVideoList = new BufferedWriter(new FileWriter("video.csv", true));
                     newVideoList.write(Integer.toString(videoEntry.getID())
                             + "," + videoEntry.getName()
                             + "," + Integer.toString(videoEntry.getValue())
@@ -272,7 +277,7 @@ public class catalog {
 
                     CheckOutAble audioEntry = checkOutAbleList.get(index);
 
-                    newAudioList = new BufferedWriter(new FileWriter("audio1.csv", true));
+                    newAudioList = new BufferedWriter(new FileWriter("audiov", true));
                     newAudioList.write(Integer.toString(audioEntry.getID())
                             + "," + audioEntry.getName()
                             + "," + Integer.toString(audioEntry.getValue())
