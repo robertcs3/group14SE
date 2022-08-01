@@ -72,14 +72,13 @@ class librarySystem  {
 
     public int checkOutItem(int itemID, int userID)
     {
-        System.out.println(itemID);
         return checkoutTracker.checkOutItem(userID, libraryCatalog.getItem(itemID), currentUser.isChild());
     }
 
-    public HashMap<Integer,ArrayList<Integer>> showFinesDetail(int userID)
+    public HashMap<Integer,ArrayList<String>> showFinesDetail(int userID)
     {
         HashMap<Integer,Integer> itemValueList = new HashMap<>();
-        HashMap<Integer,ArrayList<Integer>> finesDetailList = new HashMap<>();
+        HashMap<Integer,ArrayList<String>> finesDetailList = new HashMap<>();
         for(CheckOutAble item: libraryCatalog.showCatalog())
         {
             itemValueList.put(item.getID(), item.getValue());
@@ -87,7 +86,7 @@ class librarySystem  {
         ArrayList<CheckOutAble> outstandingItemList = checkoutTracker.outStandingFine(userID, itemValueList);
         for(CheckOutAble item: outstandingItemList)
         {
-            ArrayList<Integer> finesDetail = paymentSystem.displayReceipt(item);
+            ArrayList<String> finesDetail = paymentSystem.displayReceipt(item);
             finesDetailList.put(item.getID(),finesDetail);
         }
         //Get value for each implement in payment tracker

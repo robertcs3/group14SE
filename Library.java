@@ -583,7 +583,9 @@ public class Library
                 JPanel detailFinePanel = new JPanel();
                 detailFinePanel.setPreferredSize(new Dimension(500,500));
 
-                JTextArea finesDisplayArea = new JTextArea("Fines");
+                JEditorPane finesDisplayArea = new JEditorPane();
+                finesDisplayArea.setEditable(false);
+                finesDisplayArea.setContentType("text/html");
 
                 detailFinePanel.add(finesDisplayArea);
                 detailFineFrame.add(detailFinePanel);
@@ -592,8 +594,18 @@ public class Library
                 detailFineFrame.pack();
                 detailFineFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-                HashMap<Integer, ArrayList<Integer>> finesDetailList = new HashMap<>();
-
+                HashMap<Integer, ArrayList<String>> finesDetailList = system.showFinesDetail(currentUserID);
+                String displayString = "Fines Detail";
+                for(int id: finesDetailList.keySet())
+                {
+                    //name , value, daysOverdue, subTotal
+                    displayString += "<pre> Item ID: " + id + "</br>";
+                    displayString += "<br>      Item Name: " + finesDetailList.get(id).get(0) + "</br>";
+                    displayString += "<br>      Item Value: " + finesDetailList.get(id).get(1) + "</br>";
+                    displayString += "<br>      Days Overdue: " + finesDetailList.get(id).get(2) + "</br>";
+                    displayString += "<br>      <b> Fines Amount:</b> $"+finesDetailList.get(id).get(3) + "</pre>";
+                }
+                finesDisplayArea.setText(displayString);
             }
         });
         //Request Renew-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -835,7 +847,7 @@ public class Library
                         int successValue = system.checkOutItem(Integer.parseInt(itemID), currentUserID);
                         if(successValue == 1)
                         {
-                            JOptionPane.showMessageDialog(checkoutFrame, "Critical Error");
+                            JOptionPane.showMessageDialog(checkoutFrame, "There are outstanding request for the item");
                         }
                         else if(successValue == 2)
                         {

@@ -91,7 +91,14 @@ public class checkoutTracker {
             returnValue = 0;
             if(checkoutLog.containsKey(userID))
             {
+
                 System.out.println("Check 1");
+                //Format Date output to MM/dd/yyyy to write to file
+                DateFormat writeFormat = new SimpleDateFormat("MM/dd/yyyy");
+                DateFormat outPutFormat = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+
+                Date currentDate = new Date(System.currentTimeMillis());
+                item.setDateCheckout(currentDate);
                 checkoutLog.get(userID).add(item);
             }
             else

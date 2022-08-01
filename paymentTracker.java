@@ -58,7 +58,7 @@ class paymentTracker{
       return grandTotal;
   }
 
-  public ArrayList<Integer> displayReceipt(CheckOutAble item){
+  public ArrayList<String> displayReceipt(CheckOutAble item){
       Date currentDate = new Date();
       // Getting date checked out to calculate days overdue
       Date checkedOut =item.getDateCheckout();
@@ -66,7 +66,7 @@ class paymentTracker{
           // durationLimit (after x days fees begin incurring)
           int durationLimit = 0;
           int daysOverdue= 0;
-          int subTotal= 0;
+          double subTotal= 0;
 
           String id = Integer.toString(item.getID());
           char result = id.charAt(4);
@@ -97,10 +97,10 @@ class paymentTracker{
               // ensuring overdue fees can not exceed item price value
 
               if(tempTotal > itemValue){
-                  subTotal = (int) itemValue;
+                  subTotal = itemValue;
               }
               else{
-                  subTotal = (int) tempTotal;
+                  subTotal = tempTotal;
               }
           }
           else{
@@ -112,10 +112,11 @@ class paymentTracker{
                   + "\n" +"Item Value: " + item.getValue()
                   + "\n" + "Days Overdue: " + daysOverdue
                   + "\n" + "SubTotal: " + subTotal + "\n");
-          ArrayList<Integer> returnList = new ArrayList<>();
-          returnList.add(item.getValue());
-          returnList.add(daysOverdue);
-          returnList.add(subTotal);
+          ArrayList<String> returnList = new ArrayList<>();
+          returnList.add(""+item.getName());
+          returnList.add(""+item.getValue());
+          returnList.add(""+daysOverdue);
+          returnList.add(""+subTotal);
           return returnList;
       }
   }
