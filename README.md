@@ -1,2 +1,7 @@
 # group14SE
-Library SE project
+Original Contributors
+*An Thanh Ngo
+*Robert Stebbins
+*Brandon W Swanwick
+*Jimenez Jr
+Compile Library.java to start
